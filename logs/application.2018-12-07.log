@@ -1,0 +1,121 @@
+2018-12-07 20:04:31.829 145  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-3]  - Slf4jLogger started
+2018-12-07 20:04:32.762 1078 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 20:04:39.380 7696 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:04:44.362 12678 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:04:49.383 17699 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:04:54.403 22719 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:04:59.423 27739 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:05:04.443 32759 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:05:09.462 37778 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:05:14.483 42799 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:05:19.502 47818 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:05:24.522 52838 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:05:29.543 57859 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:05:30.487 58803 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"3d76e7dc57904af4c8a543bb961d2b4e39814719","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 20:05:30.520 58836 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 20:05:30.553 58869 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-4]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(QPyKtpcF6IBmbUg63czfKNvdvEl66keA,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 20:05:30.570 58886 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 20:05:34.562 62878 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:05:39.585 67901 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:05:40.507 68823 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - webSocket closed
+2018-12-07 20:09:21.746 147  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-2]  - Slf4jLogger started
+2018-12-07 20:09:22.475 876  INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 20:09:28.787 7188 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:09:31.576 9977 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"205a8b8feb906c5f7a84808cc8cbebdbe07f350a","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 20:09:31.612 10013 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-2]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 20:09:31.642 10043 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-2]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(ZF2YuzlHF8U09uDp2PbP6Y19ueKQX2Tb,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 20:09:31.654 10055 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-2]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 20:09:33.780 12181 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:09:38.800 17201 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:09:41.593 19994 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - webSocket closed
+2018-12-07 20:22:56.347 162  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-3]  - Slf4jLogger started
+2018-12-07 20:22:57.848 1663 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 20:23:04.691 8506 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:23:08.260 12075 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"26636b58e61831c3005d6fe1afe9df5619f101c3","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 20:23:08.406 12221 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 20:23:08.583 12398 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-4]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(glBlTY0KolqyDRvwzETeujM3W87Tdo1u,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 20:23:08.664 12479 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 20:23:09.593 13408 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:23:14.613 18428 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-15]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:23:18.216 22031 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-15]  - webSocket closed
+2018-12-07 20:25:23.480 172  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-2]  - Slf4jLogger started
+2018-12-07 20:25:24.243 935  INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 20:25:30.568 7260 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:25:31.724 8416 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"677af0f6aca0bda38d70057a9506af890897f585","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 20:25:31.759 8451 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 20:25:31.790 8482 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-3]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(nxGzOgJzDEo4BmWJ2iWK80MbeRbsPty5,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 20:25:31.805 8497 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 20:25:35.552 12244 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:25:40.569 17261 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:25:41.748 18440 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - webSocket closed
+2018-12-07 20:26:11.123 165  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-2]  - Slf4jLogger started
+2018-12-07 20:26:11.900 942  INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 20:26:18.272 7314 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:26:18.896 7938 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"ec3dc21f2da14a200f2d90f9efe9014a943008c8","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 20:26:18.931 7973 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 20:26:18.960 8002 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-4]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(OAW2yU2EYtvr6v40LFiM9MMsZSOd8Jwj,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 20:26:18.975 8017 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 20:26:23.259 12301 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:26:28.279 17321 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 20:26:28.914 17956 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - webSocket closed
+2018-12-07 21:31:24.170 166  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-3]  - Slf4jLogger started
+2018-12-07 21:31:25.254 1250 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-5]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 21:31:31.921 7917 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:31:34.782 10778 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"0bdd30b569e4d54107f49b4877aa8b2b513359a5","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 21:31:34.972 10968 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 21:31:35.338 11334 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-3]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(vchtS9252mizoy6gXNDMdIE4KqNeQmgT,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 21:31:35.495 11491 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 21:31:36.831 12827 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:31:41.852 17848 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:31:44.646 20642 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - webSocket closed
+2018-12-07 21:34:39.546 165  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-2]  - Slf4jLogger started
+2018-12-07 21:34:40.376 995  INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 21:34:46.806 7425 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:34:49.842 10461 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"645a1a158bf114b32275f193dfa6a715308af0ea","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 21:34:49.881 10500 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-2]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 21:34:49.912 10531 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-2]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(cB0oWjuwnKFbj2fEsKxtU9mI3iUrZdEQ,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 21:34:49.926 10545 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-2]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 21:34:51.779 12398 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-6]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:34:56.801 17420 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:34:59.863 20482 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - webSocket closed
+2018-12-07 21:45:44.668 159  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-3]  - Slf4jLogger started
+2018-12-07 21:45:45.464 955  INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 21:45:51.902 7393 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:45:56.894 12385 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:46:01.912 17403 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:46:01.977 17468 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"b8459f449a0977fade64b966a002a8994340738a","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 21:46:02.016 17507 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 21:46:02.050 17541 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-3]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(7Y73nBrs2sX67s93bBxX0NrrzzZnTl5B,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 21:46:02.063 17554 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 21:46:06.941 22432 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:46:11.955 27446 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:46:12.008 27499 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - webSocket closed
+2018-12-07 21:53:38.578 182  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-3]  - Slf4jLogger started
+2018-12-07 21:53:39.653 1257 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 21:53:46.126 7730 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:53:47.562 9166 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"88323e37bc5af2b1999af62e6c8f6854428eab44","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 21:53:47.602 9206 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 21:53:47.633 9237 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-3]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(dCAGGNIYhPPsGQd814FUS4w1T9EYqjKP,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 21:53:47.648 9252 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 21:53:51.119 12723 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:53:56.137 17741 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:53:57.590 19194 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - webSocket closed
+2018-12-07 21:56:43.959 158  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-3]  - Slf4jLogger started
+2018-12-07 21:56:44.937 1136 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 21:56:51.761 7960 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:56:53.150 9349 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"f2ed96d388ffe43231181a6fd7ae62cc64b59855","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 21:56:53.261 9460 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 21:56:53.319 9518 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-4]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(Th90TAJjjtnV0WL0d9MQAtVZyOvOHySp,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 21:56:53.342 9541 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 21:56:56.698 12897 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:57:01.716 17915 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:57:03.162 19361 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - webSocket closed
+2018-12-07 21:57:42.104 166  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-3]  - Slf4jLogger started
+2018-12-07 21:57:42.946 1008 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-2]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-07 21:57:49.189 7251 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"7d63b49622698098fdd7779a6a8a1a6e161da194","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-07 21:57:49.256 7318 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-07 21:57:49.271 7333 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-4]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:57:49.301 7363 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-4]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(VWhId7MtZIsx6ZY6VYg417AtunW2fgu7,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-07 21:57:49.318 7380 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-4]  - Post Request [getRoomList-orbs] Processing...
+2018-12-07 21:57:54.286 12348 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - other textMessage：{"HeartBeat":{}}
+2018-12-07 21:57:59.133 17195 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - webSocket closed

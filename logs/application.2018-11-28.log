@@ -1,0 +1,58 @@
+2018-11-28 17:17:25.641 331  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding uuid -> java.util.UUID [0m
+2018-11-28 17:17:25.646 336  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding text -> java.lang.String [0m
+2018-11-28 17:17:25.646 336  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding bool -> Boolean [0m
+2018-11-28 17:17:25.665 355  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _uuid -> scala.collection.Seq [0m
+2018-11-28 17:17:25.665 355  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _text -> scala.collection.Seq [0m
+2018-11-28 17:17:25.666 356  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _int8 -> scala.collection.Seq [0m
+2018-11-28 17:17:25.666 356  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _int4 -> scala.collection.Seq [0m
+2018-11-28 17:17:25.666 356  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _int2 -> scala.collection.Seq [0m
+2018-11-28 17:17:25.666 356  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _float4 -> scala.collection.Seq [0m
+2018-11-28 17:17:25.666 356  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _float8 -> scala.collection.Seq [0m
+2018-11-28 17:17:25.666 356  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _bool -> scala.collection.Seq [0m
+2018-11-28 17:17:25.666 356  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _date -> scala.collection.Seq [0m
+2018-11-28 17:17:25.666 356  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _time -> scala.collection.Seq [0m
+2018-11-28 17:17:25.666 356  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _timestamp -> scala.collection.Seq [0m
+2018-11-28 17:17:25.723 413  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding json -> io.circe.Json [0m
+2018-11-28 17:17:25.724 414  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding jsonb -> io.circe.Json [0m
+2018-11-28 17:17:25.728 418  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding inet -> com.github.tminglei.slickpg.InetString [0m
+2018-11-28 17:17:25.729 419  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding macaddr -> com.github.tminglei.slickpg.MacAddrString [0m
+2018-11-28 17:17:25.733 423  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding ltree -> com.github.tminglei.slickpg.LTree [0m
+2018-11-28 17:17:25.733 423  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding _ltree -> scala.collection.immutable.List [0m
+2018-11-28 17:17:25.740 430  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding int4range -> com.github.tminglei.slickpg.Range [0m
+2018-11-28 17:17:25.740 430  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding int8range -> com.github.tminglei.slickpg.Range [0m
+2018-11-28 17:17:25.740 430  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding numrange -> com.github.tminglei.slickpg.Range [0m
+2018-11-28 17:17:25.740 430  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding tsrange -> com.github.tminglei.slickpg.Range [0m
+2018-11-28 17:17:25.740 430  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding daterange -> com.github.tminglei.slickpg.Range [0m
+2018-11-28 17:17:25.740 430  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding tsrange -> com.github.tminglei.slickpg.Range [0m
+2018-11-28 17:17:25.741 431  WARN  org.seekloud.utils.MyPostgresDriver [main]  - [31m >>> DUPLICATED binding for tsrange - existed: com.github.tminglei.slickpg.Range, new: com.github.tminglei.slickpg.Range !!! [36m If it's expected, pls ignore it.[0m
+2018-11-28 17:17:25.742 432  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding tstzrange -> com.github.tminglei.slickpg.Range [0m
+2018-11-28 17:17:25.742 432  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding daterange -> com.github.tminglei.slickpg.Range [0m
+2018-11-28 17:17:25.742 432  WARN  org.seekloud.utils.MyPostgresDriver [main]  - [31m >>> DUPLICATED binding for daterange - existed: com.github.tminglei.slickpg.Range, new: com.github.tminglei.slickpg.Range !!! [36m If it's expected, pls ignore it.[0m
+2018-11-28 17:17:25.762 452  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding hstore -> scala.collection.immutable.Map [0m
+2018-11-28 17:17:25.764 454  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding tsvector -> com.github.tminglei.slickpg.TsVector [0m
+2018-11-28 17:17:25.765 455  INFO  org.seekloud.utils.MyPostgresDriver [main]  - [36m >>> binding tsquery -> com.github.tminglei.slickpg.TsQuery [0m
+2018-11-28 17:17:25.832 522  WARN  slick.util.AsyncExecutor [main]  - Having maxConnection > maxThreads can result in deadlocks if transactions or database locks are used.
+2018-11-28 17:17:26.427 1117 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: bigserial [0m
+2018-11-28 17:17:26.430 1120 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: bigserial [0m
+2018-11-28 17:17:26.430 1120 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: bigserial [0m
+2018-11-28 17:17:26.431 1121 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.431 1121 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.432 1122 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.436 1126 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.436 1126 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.436 1126 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.436 1126 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.436 1126 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.436 1126 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.436 1126 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType 12, typeName: text [0m
+2018-11-28 17:17:26.437 1127 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType 12, typeName: text [0m
+2018-11-28 17:17:26.437 1127 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType 12, typeName: text [0m
+2018-11-28 17:17:26.444 1134 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType 12, typeName: varchar [0m
+2018-11-28 17:17:26.444 1134 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType 12, typeName: varchar [0m
+2018-11-28 17:17:26.444 1134 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType 12, typeName: varchar [0m
+2018-11-28 17:17:26.445 1135 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.445 1135 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.445 1135 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.445 1135 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.445 1135 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m
+2018-11-28 17:17:26.445 1135 INFO  c.g.t.s.ExPostgresProfile$ExModelBuilder [scala-execution-context-global-14]  - [info][36m jdbcTypeToScala - jdbcType -5, typeName: int8 [0m

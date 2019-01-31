@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <option name="incrementalityType" value="SBT" />
+    <profile name="sbt 1" modules="root" />
+    <profile name="sbt 2" modules="backend,sharedJVM">
+      <option name="featureWarnings" value="true" />
+    </profile>
+    <profile name="sbt 3" modules="frontend,sharedJS">
+      <option name="featureWarnings" value="true" />
+      <plugins>
+        <plugin path="C:\Users\Arrow\.ivy2\cache\org.scala-js\scalajs-compiler_2.12.4\jars\scalajs-compiler_2.12.4-0.6.23.jar" />
+      </plugins>
+    </profile>
+  </component>
+</project>

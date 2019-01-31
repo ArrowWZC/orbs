@@ -1,0 +1,11 @@
+2018-12-06 14:59:03.343 161  INFO  akka.event.slf4j.Slf4jLogger [thorSystem-akka.actor.default-dispatcher-2]  - Slf4jLogger started
+2018-12-06 14:59:04.183 1001 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Get Request [ESheepLink: getLoginInfo] Processing...
+2018-12-06 14:59:10.794 7612 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-06 14:59:15.790 12608 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-5]  - other textMessage：{"HeartBeat":{}}
+2018-12-06 14:59:16.556 13374 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - Ws4AgentRsp: {"Ws4AgentRsp":{"data":{"userId":10002,"nickname":"Arrow","token":"2fc43718e57c0e2e2cf728b7e5c35af079dd4130","tokenExpireTime":7200,"headImg":"http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLHQUZSdRCcBDQLI49Y1B2z50CLtoVvLmtibKCUAnFV3Z8ibL7mjzOGcAUmlRSaNjlE0ibRuK1G0yvCg/132","gender":2},"errCode":0,"msg":"ok"}}
+2018-12-06 14:59:16.594 13412 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-5]  - Post Request [ESheepLink: linkGame(getAccessCode)] Processing...
+2018-12-06 14:59:16.641 13459 INFO  org.seekloud.orbs.actor.TokenActor$ [thorSystem-akka.actor.default-dispatcher-3]  - init GameInfo success: | ClientJoinGameRsp(JoinGameInfo(XdUoAQPl3MKLcaH3Mo12jaEa8alakERK,GameServerInfo(10.1.29.250,30376,flowdev.neoap.com)),0,ok)
+2018-12-06 14:59:16.659 13477 INFO  com.neo.sk.utils.HttpUtil$ [thorSystem-akka.actor.default-dispatcher-3]  - Post Request [getRoomList-orbs] Processing...
+2018-12-06 14:59:20.807 17625 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - other textMessage：{"HeartBeat":{}}
+2018-12-06 14:59:25.833 22651 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-2]  - other textMessage：{"HeartBeat":{}}
+2018-12-06 14:59:26.583 23401 INFO  org.seekloud.orbs.actor.LoginActor$ [thorSystem-akka.actor.default-dispatcher-3]  - webSocket closed
