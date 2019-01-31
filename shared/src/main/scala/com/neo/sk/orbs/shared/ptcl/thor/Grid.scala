@@ -1,4 +1,4 @@
-package com.neo.sk.orbs.shared.ptcl.orbs
+package com.neo.sk.orbs.shared.ptcl.thor
 
 import java.awt.event.KeyEvent
 import java.util.concurrent.atomic.{AtomicInteger, AtomicLong}
