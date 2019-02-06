@@ -8,12 +8,12 @@ val scalaV = "2.12.4"
 //val scalaV = "2.11.8"
 
 val projectName = "orbs"
-val projectVersion = "2018.11.9"
+val projectVersion = "2019.2.5"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 
-val projectMainClass = "com.neo.sk.orbs.Boot"
+val projectMainClass = "org.seekloud.orbs.Boot"
 
 def commonSettings = Seq(
   version := projectVersion,
@@ -48,17 +48,19 @@ lazy val frontend = (project in file("frontend"))
   .settings(skip in packageJSDependencies := false)
   .settings(
     scalaJSUseMainModuleInitializer := false,
-    //mainClass := Some("com.neo.sk.virgour.front.Main"),
+    //mainClass := Some("org.seekloud.virgour.front.Main"),
     libraryDependencies ++= Seq(
       "io.circe" %%% "circe-core" % "0.8.0",
       "io.circe" %%% "circe-generic" % "0.8.0",
       "io.circe" %%% "circe-parser" % "0.8.0",
       "org.scala-js" %%% "scalajs-dom" % "0.9.2",
+      "org.seekloud" %%% "byteobject" % "0.1.1",
       "in.nvilla" %%% "monadic-html" % "0.4.0-RC1" withSources(),
       "com.github.japgolly.scalacss" %%% "core" % "0.5.5" withSources(),
       "io.suzaku" %%% "diode" % "1.1.2",
       //"com.lihaoyi" %%% "upickle" % upickleV,
-      "com.lihaoyi" %%% "scalatags" % "0.6.5"
+      "com.lihaoyi" %%% "scalatags" % "0.6.5",
+      "org.seekloud" %%% "byteobject" % "0.1.1"
       //"org.scala-js" %%% "scalajs-java-time" % scalaJsJavaTime
       //"com.lihaoyi" %%% "utest" % "0.3.0" % "test"
     )
@@ -107,11 +109,11 @@ lazy val backend = (project in file("backend")).enablePlugins(PackPlugin)
   //      )
   //    }.taskValue)
   .settings((resourceGenerators in Compile) += Def.task {
-    Seq(
-      (packageJSDependencies in Compile in frontend).value
-      //(packageMinifiedJSDependencies in Compile in frontend).value
-    )
-  }.taskValue)
+  Seq(
+    (packageJSDependencies in Compile in frontend).value
+    //(packageMinifiedJSDependencies in Compile in frontend).value
+  )
+}.taskValue)
   .settings(
     (resourceDirectories in Compile) += (crossTarget in frontend).value,
     watchSources ++= (watchSources in frontend).value
@@ -119,9 +121,12 @@ lazy val backend = (project in file("backend")).enablePlugins(PackPlugin)
   .dependsOn(sharedJvm)
 
 
+
 lazy val root = (project in file("."))
   .aggregate(frontend,  backend)
-  .settings(name := projectName)
+  .settings(
+    name := projectName
+  )
 
 
 

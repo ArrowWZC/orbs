@@ -40,7 +40,6 @@
     <orderEntry type="library" name="sbt: org.scala-lang:scala-reflect:2.12.4:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.12.4:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: org.scala-js:scalajs-test-interface_2.12:0.6.23:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.scala-js:scalajs-library_2.12:0.6.23:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-js:scalajs-dom_sjs0.6_2.12:0.9.4:jar" level="project" />
     <orderEntry type="library" name="sbt: io.suzaku:diode_sjs0.6_2.12:1.1.2:jar" level="project" />
     <orderEntry type="library" name="sbt: io.suzaku:diode-data_sjs0.6_2.12:1.1.2:jar" level="project" />
@@ -57,6 +56,8 @@
     <orderEntry type="library" name="sbt: com.github.mpilquist:simulacrum_sjs0.6_2.12:0.10.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.github.japgolly.univeq:univeq_sjs0.6_2.12:1.0.2:jar" level="project" />
     <orderEntry type="library" name="sbt: com.github.japgolly.scalacss:core_sjs0.6_2.12:0.5.5:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.chuusai:shapeless_sjs0.6_2.12:2.3.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.chuusai:shapeless_sjs0.6_2.12:2.3.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-js:scalajs-library_2.12:0.6.24:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.seekloud:byteobject_sjs0.6_2.12:0.1.1:jar" level="project" />
   </component>
 </module>
