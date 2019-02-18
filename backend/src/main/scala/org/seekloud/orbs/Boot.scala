@@ -18,6 +18,8 @@ import akka.stream.scaladsl._
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import akka.actor.typed.scaladsl.adapter._
+import org.seekloud.orbs.core.{RoomManager, UserManager}
+
 import scala.concurrent.duration._
 
 
@@ -39,6 +41,10 @@ object Boot extends HttpService {
   override implicit val timeout:Timeout = Timeout(20 seconds) // for actor asks
 
   val log: LoggingAdapter = Logging(system, getClass)
+
+  val userManager: ActorRef[UserManager.Command] = system.spawn(UserManager.behavior, "userManager")
+
+  val roomManager: ActorRef[RoomManager.Command] = system.spawn(RoomManager.behavior, "roomManager")
 
 
   def main(args: Array[String]) {

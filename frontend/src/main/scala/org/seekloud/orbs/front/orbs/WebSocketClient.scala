@@ -3,7 +3,7 @@ package org.seekloud.orbs.front.orbs
 import org.seekloud.orbs.front.common.Routes
 import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol
 //import org.seekloud.orbs.front.utils.byteObject.MiddleBufferInJs
-import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol.{DecodeError, WsMsgFront, WsMsgServer}
+import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol.{WsMsgFront, WsMsgServer}
 import org.scalajs.dom
 import org.scalajs.dom.raw._
 

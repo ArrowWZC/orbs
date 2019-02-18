@@ -9,18 +9,27 @@ import scala.collection.mutable
   */
 object Constants {
 
+  object DirectionType {
+    final val right:Float = 0
+    final val left = math.Pi
+  }
+
   object GameState{
     val firstCome = 1
     val play = 2
     val stop = 3
     val loadingPlay = 4
     val relive = 5
-    val replayLoading = 6
+  }
+
+  object Canvas {
+    val width: Float = 350
+    val height: Float = 500
   }
 
   val preExecuteFrameOffset = 2 //预执行2帧
 
-  val canvasUnitPerLine = 120 //可视窗口每行显示多少个canvasUnit
+  val canvasUnitPerLine = Canvas.width //可视窗口每行显示多少个canvasUnit
 
 
 }

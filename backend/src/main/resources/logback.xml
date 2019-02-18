@@ -32,7 +32,7 @@
 
   <logger name="akka" level="INFO" additivity="true"/>
 
-  <root level="INFO">
+  <root level="DEBUG">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="FILE" />
   </root>

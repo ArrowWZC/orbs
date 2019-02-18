@@ -21,7 +21,8 @@ import scala.concurrent.{ExecutionContextExecutor, Future}
   * Time: 16:29
   */
 trait HttpService extends ResourceService
-                     with ServiceUtils {
+                     with ServiceUtils
+                     with OrbsService {
 
   import akka.actor.typed.scaladsl.AskPattern._
   import org.seekloud.utils.CirceSupport._
@@ -40,12 +41,7 @@ trait HttpService extends ResourceService
   import akka.actor.typed.scaladsl.adapter._
 
   lazy val routes: Route = pathPrefix(AppSettings.rootPath) {
-    resourceRoutes ~
-    (pathPrefix("game") & get){
-      pathEndOrSingleSlash{
-        getFromResource("html/admin.html")
-      }
-    }
+    resourceRoutes ~ orbsRoutes
   }
 
 

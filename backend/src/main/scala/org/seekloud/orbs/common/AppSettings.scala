@@ -3,6 +3,7 @@ package org.seekloud.orbs.common
 import java.util.concurrent.TimeUnit
 
 import com.typesafe.config.{Config, ConfigFactory}
+import org.seekloud.orbs.core.game.OrbsConfigServerImpl
 import org.seekloud.utils.SessionSupport.SessionConfig
 import org.slf4j.LoggerFactory
 
@@ -31,7 +32,7 @@ object AppSettings {
   val appConfig = config.getConfig("app")
   val dependence = config.getConfig("dependence")
 
-//  val thorGameConfig:ThorGameConfig = ThorGameConfigServerImpl(ConfigFactory.parseResources("thorGame.conf"))
+  val orbsGameConfig = OrbsConfigServerImpl(ConfigFactory.parseResources("orbsGame.conf"))
 
   val version = appConfig.getString("version")
 
@@ -89,6 +90,7 @@ object AppSettings {
 
   val dependenceConfig = config.getConfig("dependence")
   val orbsConfig = dependenceConfig.getConfig("orbs")
+  val personLimit = orbsConfig.getInt("personLimit")
 
 
 

@@ -12,6 +12,9 @@ object Routes {
 
   def wsJoinGameUrl(name:String) = base + s"/game/join?name=$name"
 
+  def imgPath(fileName: String) = base +"/static/img/" + fileName
+
+
 
 
 

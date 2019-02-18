@@ -12,8 +12,8 @@ object MainPage extends PageSwitcher {
 
 
   private val currentPage: Rx[Elem] = currentHashVar.map {
-    case "home" :: Nil => OrbsRender.render
-    case _ => <div>Error Page</div>
+    case "entry" :: Nil => EntryPage.render
+    case _ => println("error in switch"); EntryPage.render
   }
 
 

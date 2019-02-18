@@ -4,6 +4,7 @@ import akka.actor.{ActorSystem, Scheduler}
 import akka.actor.typed.ActorRef
 import akka.stream.Materializer
 import akka.util.Timeout
+import org.seekloud.orbs.core.{RoomManager, UserManager}
 import org.seekloud.utils.CirceSupport
 
 import scala.concurrent.ExecutionContextExecutor
@@ -24,6 +25,10 @@ trait BaseService extends CirceSupport with ServiceUtils {
   implicit val timeout: Timeout
 
   implicit val scheduler: Scheduler
+
+  val userManager: ActorRef[UserManager.Command]
+
+  val roomManager: ActorRef[RoomManager.Command]
 
 
 

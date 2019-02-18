@@ -8,34 +8,34 @@ import org.scalajs.dom
 import org.scalajs.dom.ext.Color
 import org.scalajs.dom.html.Canvas
 import mhtml._
+import org.seekloud.orbs.front.orbs.{GameHolder, GameHolder4Play}
+
 import scala.xml.Elem
 
 /**
   * Created by Jingyi on 2018/11/9
   */
-object OrbsRender extends Page{
+class OrbsRender(playerName: String) extends Page {
 
-  private val canvas = <canvas id ="GameView" tabindex="1"></canvas>
+  private val canvasName = "OrbsView"
 
 
-  private val modal = Var(emptyHTML)
+  private val canvas = <canvas id={canvasName} tabindex="1"></canvas>
 
-  def init() = {
+  def init(): Unit = {
+    println(s"OrbsRender init...")
 
-//    val gameHolder = new GameHolder
-//    gameHolder.start("test")
+    val gameHolder = new GameHolder4Play(canvasName)
+    gameHolder.start(playerName)
   }
 
 
-
-  override def render: Elem ={
-    Shortcut.scheduleOnce(() =>init(),0)
+  override def render: Elem = {
+    Shortcut.scheduleOnce(() => init(), 0)
     <div>
-      <div >{modal}</div>
-      {canvas}
+     {canvas}
     </div>
   }
-
 
 
 }
