@@ -74,6 +74,8 @@ case class OrbsConfigServerImpl(config: Config) extends OrbsConfig {
 
   override def getBallSpeedByLevel(l: Byte): Point = orbsGameConfig.getBallSpeedByLevel(l)
 
+  override def getBallMoveDistanceByFrame(l: Byte): Point = orbsGameConfig.getBallMoveDistanceByFrame(l)
+
   override def getBrickMax: Int = orbsGameConfig.getBrickMax
 
   override def getBrickXMax: Int = orbsGameConfig.getBrickXMax
@@ -95,8 +97,6 @@ case class OrbsConfigServerImpl(config: Config) extends OrbsConfig {
   override def getPlankWidthByLevel(l: Byte): Float = orbsGameConfig.getPlankWidthByLevel(l)
 
   override def getPlankSpeed: Point = orbsGameConfig.getPlankSpeed
-
-  override def getBallMoveDistanceByFrame(l: Byte): Point = orbsGameConfig.getBallSpeedByLevel(l)
 
   override def getPlankMoveDistanceByFrame: Point = orbsGameConfig.getPlankMoveDistanceByFrame
 

@@ -10,11 +10,11 @@ import scala.collection.mutable
 object Constants {
 
   object DirectionType {
-    final val right:Float = 0
+    final val right: Float = 0
     final val left = math.Pi
   }
 
-  object GameState{
+  object GameState {
     val firstCome = 1
     val play = 2
     val stop = 3
@@ -25,6 +25,11 @@ object Constants {
   object Canvas {
     val width: Float = 350
     val height: Float = 500
+  }
+
+  object reflector {
+    val vertical = 0
+    val horizontal = 1
   }
 
   val preExecuteFrameOffset = 2 //预执行2帧

@@ -147,15 +147,15 @@ case class OrbsSchemaServerImpl(
 
   override protected def plankMissBallCallBack(ball: Ball)(plank: Plank): Unit = {
     super.plankMissBallCallBack(ball)(plank)
-    val event = PlankMissBall(ball.pId, ball.bId)
+    val event = PlankMissBall(ball.pId, ball.bId, systemFrame)
     addGameEvent(event)
     dispatch(event)
   }
 
   override def clearEventWhenUpdate(): Unit = {
     super.clearEventWhenUpdate()
-    gameEventMap -= systemFrame - 1
-    actionEventMap -= systemFrame - 1
+    gameEventMap -= systemFrame
+    actionEventMap -= systemFrame
     systemFrame += 1
   }
 

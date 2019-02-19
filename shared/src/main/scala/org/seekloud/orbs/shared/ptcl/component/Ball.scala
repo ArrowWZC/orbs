@@ -1,7 +1,7 @@
 package org.seekloud.orbs.shared.ptcl.component
 
 import org.seekloud.orbs.shared.ptcl.config.OrbsConfig
-import org.seekloud.orbs.shared.ptcl.model.Constants.DirectionType
+import org.seekloud.orbs.shared.ptcl.model.Constants.{DirectionType, reflector}
 import org.seekloud.orbs.shared.ptcl.model.{Point, Rectangle}
 import org.seekloud.orbs.shared.ptcl.util.QuadTree
 
@@ -44,7 +44,9 @@ case class Ball(
     val random = new Random()
     this.isMove = 1
     this.isAttack = 1
-    this.direction = (random.nextFloat() * math.Pi * 0.5 - 3 / 4.0 * math.Pi).toFloat
+    //    this.direction = (random.nextFloat() * math.Pi * 0.5 - 3 / 4.0 * math.Pi).toFloat
+    this.direction = (-7 / 20.0 * math.Pi).toFloat
+    println(s"gen direction: $direction")
   }
 
   //0: left，1：right
@@ -64,14 +66,33 @@ case class Ball(
     }
   }
 
-  //TODO 球的运动函数与碰撞检测
-  //碰到上左右墙，改变方向，碰到底边，淹没之后除去该球
+  /**
+    * @param tp 反射面的类型 0：垂直，1：水平
+    **/
+  def reflect(tp: Int): Unit = {
+    println(s"ball-$bId reflect original: $direction")
+    tp match {
+      case 0 =>
+        if (this.direction > 0) {
+          this.direction = (-this.direction + math.Pi).toFloat
+        } else {
+          this.direction = (-this.direction - math.Pi).toFloat
+        }
+      case 1 =>
+        this.direction = -this.direction
+      case _ =>
+    }
+    println(s"ball-$bId reflect current:$direction")
+  }
+
   def move(boundary: Point, quadTree: QuadTree, plank: Plank)(implicit orbsConfig: OrbsConfig): Unit = {
     //isAttack的时候速度是球本身的速度，否则按照板子的速度
     if (isMove == 1) {
       if (isAttack == 1) { //球不在板上
-        println(s"ball direction: ${direction / math.Pi}Pi")
-        println(s"ball position: $position")
+        println(s"ball-$bId direction: ${direction / math.Pi}Pi")
+        println(s"ball-$bId position: $position")
+        var isVReflect = false
+        var isHReflect = false
         val moveDistance = orbsConfig.getBallMoveDistanceByFrame(level).rotate(direction)
         val horizontalDistance = moveDistance.copy(y = 0)
         val verticalDistance = moveDistance.copy(x = 0)
@@ -82,27 +103,34 @@ case class Ball(
             if (movedRec.topLeft > Point(0, 0) && movedRec.downRight < boundary) {
               quadTree.updateObject(this)
             }
-            //触碰到左右边界
-            if (movedRec.topLeft.x <= 0 || movedRec.downRight.x >= boundary.x) {
-              println(s"球触碰到左右边界！！！")
-              this.direction = -this.direction
-              this.position = Point(radius, this.position.y)
-              quadTree.updateObject(this)
+            if (d.x != 0) {
+              //触碰到左右边界
+              if (movedRec.topLeft.x <= 0 || movedRec.downRight.x >= boundary.x) {
+                if (!isVReflect) {
+                  reflect(reflector.vertical)
+                  isVReflect = true
+                }
+                if (movedRec.topLeft.x <= 0) this.position = Point(radius, this.position.y)
+                if (movedRec.downRight.x >= boundary.x) this.position = Point(boundary.x - radius, this.position.y)
+                quadTree.updateObject(this)
+              }
             }
-            //触碰到上边界
-            if (movedRec.topLeft.y <= 0) {
-              println(s"球触碰到上边界！！！")
-              this.direction = -this.direction
-              this.position = Point(this.position.x, radius)
-              quadTree.updateObject(this)
+            if (d.y != 0) {
+              //触碰到上边界
+              if (movedRec.topLeft.y <= 0) {
+                if (!isHReflect) {
+                  reflect(reflector.horizontal)
+                  isHReflect = true
+                }
+                this.position = Point(this.position.x, radius)
+                quadTree.updateObject(this)
 
+              }
+              //从下边界消失
+              if (movedRec.topLeft.y >= boundary.y) {
+                this.isMissed = 1
+              }
             }
-            //从下边界消失
-            if (movedRec.topLeft.y >= boundary.y) {
-              println(s"球从下边界消失！！！")
-              this.isMissed = 1
-            }
-
           }
         }
 

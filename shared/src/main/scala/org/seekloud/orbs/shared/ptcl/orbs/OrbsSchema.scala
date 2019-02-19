@@ -2,6 +2,7 @@ package org.seekloud.orbs.shared.ptcl.orbs
 
 import org.seekloud.orbs.shared.ptcl.component._
 import org.seekloud.orbs.shared.ptcl.config.OrbsConfig
+import org.seekloud.orbs.shared.ptcl.model.Constants.reflector
 import org.seekloud.orbs.shared.ptcl.model.{Point, Rectangle}
 import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol._
 import org.seekloud.orbs.shared.ptcl.util.QuadTree
@@ -210,12 +211,12 @@ trait OrbsSchema {
 
 
   protected def attackPlankCallBack(ball: Ball)(plank: Plank): Unit = {
-    ball.direction = -ball.direction
+    ball.reflect(reflector.horizontal)
   }
 
   /*后台重写*/
   protected def attackBrickCallBack(ball: Ball)(brick: Brick): Unit = {
-    ball.direction = -ball.direction
+    ball.reflect(reflector.horizontal)
   }
 
 
