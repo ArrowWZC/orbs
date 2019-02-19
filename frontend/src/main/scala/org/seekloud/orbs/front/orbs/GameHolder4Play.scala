@@ -55,7 +55,13 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
       opByteId = Some(byteId)
       orbsSchemaOpt.foreach(_.setOpId(playerId, name))
     }
+  }
 
+  def clearOpId() = {
+    opId = None
+    opName = None
+    opByteId = None
+    orbsSchemaOpt.foreach(_.clearOpInfo())
   }
 
   override protected def wsMessageHandler(data: OrbsProtocol.WsMsgServer): Unit = {
@@ -71,7 +77,7 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
           opName = Some(msg.playerIdMap.filterNot(_._1 == msg.byteId).head._2._2)
           opByteId = Some(msg.playerIdMap.filterNot(_._1 == msg.byteId).head._1)
         }
-        orbsSchemaOpt = Some(OrbsSchemaClientImpl(drawFrame, myCtx, opCtx, msg.config, myId, myName, opId, opName, canvasBoundary, canvasUnit))
+        orbsSchemaOpt = Some(OrbsSchemaClientImpl(drawFrame, myCtx, opCtx, msg.config, myId, myName, opId, opName, opLeft, canvasBoundary, canvasUnit))
         if (timer != 0) {
           dom.window.clearInterval(timer)
           orbsSchemaOpt.foreach { orbsSchema =>
@@ -85,13 +91,13 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
           }
         }
         gameState = GameState.play
-        if(nextFrame == 0) nextFrame = dom.window.requestAnimationFrame(gameRender())
+        if (nextFrame == 0) nextFrame = dom.window.requestAnimationFrame(gameRender())
         firstCome = false
 
 
       case msg: UserMap =>
         orbsSchemaOpt.foreach { orbsSchema =>
-          msg.playerIdMap.foreach{
+          msg.playerIdMap.foreach {
             p =>
               orbsSchema.playerIdMap.put(p._1, p._2)
               if (p._1 != myByteId) {
@@ -111,7 +117,7 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
         orbsSchemaOpt.foreach(_.receiveOrbsSchemaState(msg.s))
         justSynced = true
 
-//      case msg: PlankMissBall =>
+      //      case msg: PlankMissBall =>
 
 
       case msg: PingPackage =>
@@ -133,7 +139,16 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
 
             }
           case e: UserLeftRoom =>
-            orbsSchemaOpt.foreach(thorSchema => thorSchema.playerIdMap.remove(e.byteId))
+            println(s"收到对手离开消息！！！！！")
+            if (e.playerId != myId) {
+              clearOpId()
+              opLeft = true
+            }
+            orbsSchemaOpt.foreach{
+              orbsSchema =>
+                orbsSchema.playerIdMap.remove(e.byteId)
+                orbsSchema.opLeft = true
+            }
 
           case _ =>
 

@@ -19,6 +19,7 @@ case class OrbsSchemaClientImpl(
   myName: String,
   var opId: Option[String] = None,
   var opName: Option[String] = None,
+  var opLeft: Boolean = false,
   var canvasSize:Point,
   var canvasUnit:Float,
   var preCanvasFood: List[MiddleCanvas] = Nil,
@@ -47,12 +48,12 @@ case class OrbsSchemaClientImpl(
               drawPlank(op, opCtx, canvasUnit, canvasBounds)
               drawBall(op, opCtx, canvasUnit, canvasBounds)
               drawBricks(op, opCtx, canvasUnit, canvasBounds)
-            case None => debug(s"drawGame not find opponent plank: $myId")
+            case None => debug(s"drawGame not find opponent plank: $op")
           }
         }
       } else {
         needUserMap = true
-        drawWaitingOp(opCtx)
+        if (!opLeft) drawWaitingOp(opCtx) else drawPlayerLeave(opCtx)
       }
     } else {
       println(s"waitSyncData is true.")
@@ -62,6 +63,11 @@ case class OrbsSchemaClientImpl(
   def setOpId(id: String, name: String): Unit = {
     opId = Some(id)
     opName = Some(name)
+  }
+
+  def clearOpInfo() = {
+    opId = None
+    opName = None
   }
 
 

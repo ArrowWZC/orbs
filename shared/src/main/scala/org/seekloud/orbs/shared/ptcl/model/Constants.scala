@@ -32,6 +32,12 @@ object Constants {
     val horizontal = 1
   }
 
+  object GameInfo {
+    val linking = "请稍等，正在连接服务器..."
+    val waitOpJoin = "等待对手加入..."
+    val opponentLeft = "您的对手已离开！"
+  }
+
   val preExecuteFrameOffset = 2 //预执行2帧
 
   val canvasUnitPerLine = Canvas.width //可视窗口每行显示多少个canvasUnit

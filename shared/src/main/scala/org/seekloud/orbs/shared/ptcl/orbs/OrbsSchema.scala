@@ -228,37 +228,33 @@ trait OrbsSchema {
 
   protected final def handleBallMoveNow(): Unit = {
     ballMap.foreach { ball =>
-      try {
-        val ballByteId = playerId2ByteId(ball._1.split("&").head).right.get
-
-        if (plankMap.exists(_._1 == ball._1.split("&").head)) {
-          if (ball._2.isMissed == 1) {
-            val plank = plankMap.get(ball._1.split("&").head)
-            plank.foreach(plankMissBallCallBack(ball._2))
-          }
-          val objects = quadTree.retrieveFilter(ball._2)
-          objects.filter(_.isInstanceOf[Plank]).map(_.asInstanceOf[Plank]).filter(_.pId == ballByteId)
-            .foreach { p =>
-              ball._2.checkAttackObject(p, attackPlankCallBack(ball._2))
+      playerId2ByteId(ball._1.split("&").head) match {
+        case Right(ballByteId) =>
+          if (plankMap.exists(_._1 == ball._1.split("&").head)) {
+            if (ball._2.isMissed == 1) {
+              val plank = plankMap.get(ball._1.split("&").head)
+              plank.foreach(plankMissBallCallBack(ball._2))
             }
-          objects.filter(_.isInstanceOf[Brick]).map(_.asInstanceOf[Brick])
-            .foreach { brick =>
-              brickMap.filter(_._2 == brick).foreach { b =>
-                if (b._1.split("&").head == ball._1.split("&").head) {
-                  ball._2.checkAttackObject(brick, attackBrickCallBack(ball._2))
+            val objects = quadTree.retrieveFilter(ball._2)
+            objects.filter(_.isInstanceOf[Plank]).map(_.asInstanceOf[Plank]).filter(_.pId == ballByteId)
+              .foreach { p =>
+                ball._2.checkAttackObject(p, attackPlankCallBack(ball._2))
+              }
+            objects.filter(_.isInstanceOf[Brick]).map(_.asInstanceOf[Brick])
+              .foreach { brick =>
+                brickMap.filter(_._2 == brick).foreach { b =>
+                  if (b._1.split("&").head == ball._1.split("&").head) {
+                    ball._2.checkAttackObject(brick, attackBrickCallBack(ball._2))
+                  }
                 }
               }
-            }
-          ball._2.move(boundary, quadTree, plankMap(ball._1.split("&").head))(config)
-        } else {
-          debug(s"player [${ball._1}] has no plank, remove ball.")
-          ballMap.remove(ball._1)
-          quadTree.remove(ball._2)
-        }
-      } catch {
-        case e: Exception =>
-          debug(s"handleBallMoveNow error: $e")
-          e.printStackTrace()
+            ball._2.move(boundary, quadTree, plankMap(ball._1.split("&").head))(config)
+          } else {
+            debug(s"player [${ball._1}] has no plank, remove ball.")
+            ballMap.remove(ball._1)
+            quadTree.remove(ball._2)
+          }
+        case Left(_) => debug(s"ball-${ball._1} move error. missing in playerIdMap")
       }
     }
   }

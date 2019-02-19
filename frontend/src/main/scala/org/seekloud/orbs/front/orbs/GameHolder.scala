@@ -23,7 +23,7 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
 
   /*canvas*/
   protected var canvasWidth = Constants.Canvas.width
-  protected var canvasHeight =Constants.Canvas.height
+  protected var canvasHeight = Constants.Canvas.height
   protected val myCanvas = drawFrame.createCanvas(canvasName, canvasWidth, canvasHeight)
   protected val myCtx = myCanvas.getCtx
   protected val opCanvas = drawFrame.createCanvas(opCanvasName, canvasWidth, canvasHeight)
@@ -44,6 +44,7 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
   protected var opName: Option[String] = None
   protected var myByteId: Byte = 0
   protected var opByteId: Option[Byte] = None
+  protected var opLeft = false
   protected var gameConfig: Option[OrbsConfigImpl] = None
   protected var firstCome = true
 
@@ -59,7 +60,7 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
     val curTime = System.currentTimeMillis()
     val offsetTime = curTime - logicFrameTime
     drawGameByTime(offsetTime, canvasUnit, canvasBounds)
-//    if(gameState == GameState.stop && orbsSchemaOpt.nonEmpty) orbsSchemaOpt.foreach(_.drawGameStop(killerName, killNum, energyScore, level))
+    //    if(gameState == GameState.stop && orbsSchemaOpt.nonEmpty) orbsSchemaOpt.foreach(_.drawGameStop(killerName, killNum, energyScore, level))
     nextFrame = dom.window.requestAnimationFrame(gameRender())
   }
 
@@ -67,7 +68,7 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
     val width = dom.window.innerWidth.toFloat
     val height = dom.window.innerHeight.toFloat
     val perLine = Constants.canvasUnitPerLine
-    if(width != canvasWidth || height != canvasHeight){
+    if (width != canvasWidth || height != canvasHeight) {
       canvasWidth = width
       canvasHeight = height
       canvasUnit = canvasWidth / perLine
@@ -79,19 +80,19 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
     }
   }
 
-  protected def wsConnectSuccess(e: Event) = {
+  protected def wsConnectSuccess(e: Event): Event = {
     println(s"连接服务器成功")
     e
   }
 
 
-  protected def wsConnectError(e: Event) = {
+  protected def wsConnectError(e: Event): Event = {
     JsFunc.alert("网络连接错误，请重新刷新")
     e
   }
 
 
-  protected def wsConnectClose(e: Event) = {
+  protected def wsConnectClose(e: Event): Event = {
     JsFunc.alert("网络连接失败，请重新刷新")
     e
   }
@@ -99,33 +100,38 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
   protected def wsMessageHandler(e: WsMsgServer)
 
 
-  def closeHolder={
+  def closeHolder() = {
     dom.window.cancelAnimationFrame(nextFrame)
     Shortcut.cancelSchedule(timer)
     webSocketClient.closeWs
   }
 
 
-  protected def sendMsg2Server(msg:OrbsProtocol.WsMsgFront):Unit ={
+  protected def sendMsg2Server(msg: OrbsProtocol.WsMsgFront): Unit = {
     webSocketClient.sendMsg(msg)
   }
 
   var lastSendReq = 0L
+
   protected def gameLoop(): Unit = {
-//    handleResize()
+    //    handleResize()
     logicFrameTime = System.currentTimeMillis()
-    gameState match{
+    gameState match {
       case GameState.firstCome =>
-        orbsSchemaOpt.foreach{ _.drawGameLoading()}
+        orbsSchemaOpt.foreach {
+          _.drawGameLoading(myCtx)
+        }
       case GameState.loadingPlay =>
-        orbsSchemaOpt.foreach{ _.drawGameLoading()}
+        orbsSchemaOpt.foreach {
+          _.drawGameLoading(myCtx)
+        }
       case GameState.stop =>
-        //TODO
+      //TODO
 
       case GameState.play =>
         orbsSchemaOpt.foreach { orbsSchema =>
           orbsSchema.update()
-          if( orbsSchema.needUserMap && logicFrameTime - lastSendReq > 5000){
+          if (orbsSchema.needUserMap && logicFrameTime - lastSendReq > 5000) {
             println("request for user map")
             webSocketClient.sendMsg(UserMapReq)
             lastSendReq = System.currentTimeMillis()
@@ -141,31 +147,10 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
       if (orbsSchema.plankMap.contains(myId)) {
         orbsSchema.drawGame(offsetTime, canvasUnit, canvasBounds)
       } else {
-        orbsSchema.drawGameLoading()
+        orbsSchema.drawGameLoading(myCtx)
       }
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -87,7 +87,7 @@ object RoomActor {
 
           orbsSchema.playerIdMap.foreach { p =>
             if (p._2._1 == playerId) {
-              dispatch(subscribersMap)(UserLeftRoom(playerId, p._1, name))
+              dispatch(subscribersMap)(UserLeftRoom(playerId, p._1, name, orbsSchema.systemFrame))
               orbsSchema.playerIdMap.remove(p._1)
             }
           }
