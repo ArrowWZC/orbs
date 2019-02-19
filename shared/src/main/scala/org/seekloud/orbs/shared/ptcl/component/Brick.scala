@@ -28,7 +28,7 @@ case class Brick(
   override protected val width: Float = config.getBrickShape.x
   override protected val height: Float = config.getBrickShape.y
 
-  def getBrickState = {
+  def getBrickState: BrickState = {
     BrickState(pId, rId, isNormal, position, color)
   }
 

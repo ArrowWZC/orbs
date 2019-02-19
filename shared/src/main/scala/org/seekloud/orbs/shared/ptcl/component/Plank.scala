@@ -44,14 +44,14 @@ case class Plank(
     direction = if (d == 0) DirectionType.left.toFloat else DirectionType.right
   }
 
-  def stopMoving() = {
+  def stopMoving(): Unit = {
     isMove = 0
   }
 
   //TODO 板子的运动函数、吃到道具
   def move(boundary: Point, quadTree: QuadTree)(implicit orbsConfig: OrbsConfig): Unit = {
     if (isMove == 1) {
-      val oldOb = this
+      val oldPosition = this.position
       val moveDistance = orbsConfig.getPlankMoveDistanceByFrame.rotate(direction)
       val horizontalDistance = moveDistance.copy(y = 0)
       val verticalDistance = moveDistance.copy(x = 0)
@@ -60,11 +60,12 @@ case class Plank(
           this.position = position + d
           val movedRec = this.getObjectRect()
           if (movedRec.topLeft > Point(0, 0) && movedRec.downRight < boundary) {
-            quadTree.updateObject(oldOb, this)
+            quadTree.updateObject(this)
           }
           if (movedRec.topLeft.x <= 0 || movedRec.downRight.x >= boundary.x) {
-            this.position = Point(oldOb.position.x, this.position.y)
-            quadTree.updateObject(oldOb, this)
+            if (movedRec.topLeft.x <= 0) this.position = Point(width / 2, oldPosition.y)
+            if (movedRec.downRight.x >= boundary.x) this.position = Point(boundary.x - width / 2, oldPosition.y)
+            quadTree.updateObject(this)
           }
         }
       }

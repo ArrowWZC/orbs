@@ -5,6 +5,8 @@ import org.seekloud.orbs.shared.ptcl.model.Constants.DirectionType
 import org.seekloud.orbs.shared.ptcl.model.{Point, Rectangle}
 import org.seekloud.orbs.shared.ptcl.util.QuadTree
 
+import scala.util.Random
+
 /**
   * User: TangYaruo
   * Date: 2019/2/6
@@ -39,8 +41,10 @@ case class Ball(
   }
 
   def startAttack(): Unit = {
-    isMove = 1
-    isAttack = 1
+    val random = new Random()
+    this.isMove = 1
+    this.isAttack = 1
+    this.direction = (random.nextFloat() * math.Pi * 0.5 - 3 / 4.0 * math.Pi).toFloat
   }
 
   //0: left，1：right
@@ -65,8 +69,9 @@ case class Ball(
   def move(boundary: Point, quadTree: QuadTree, plank: Plank)(implicit orbsConfig: OrbsConfig): Unit = {
     //isAttack的时候速度是球本身的速度，否则按照板子的速度
     if (isMove == 1) {
-      val oldOb = this
       if (isAttack == 1) { //球不在板上
+        println(s"ball direction: ${direction / math.Pi}Pi")
+        println(s"ball position: $position")
         val moveDistance = orbsConfig.getBallMoveDistanceByFrame(level).rotate(direction)
         val horizontalDistance = moveDistance.copy(y = 0)
         val verticalDistance = moveDistance.copy(x = 0)
@@ -75,22 +80,26 @@ case class Ball(
             this.position = this.position + d
             val movedRec = Rectangle(this.position - Point(radius, radius), this.position + Point(radius, radius))
             if (movedRec.topLeft > Point(0, 0) && movedRec.downRight < boundary) {
-              quadTree.updateObject(oldOb, this)
+              quadTree.updateObject(this)
             }
             //触碰到左右边界
             if (movedRec.topLeft.x <= 0 || movedRec.downRight.x >= boundary.x) {
+              println(s"球触碰到左右边界！！！")
+              this.direction = -this.direction
               this.position = Point(radius, this.position.y)
-              quadTree.updateObject(oldOb, this)
-
+              quadTree.updateObject(this)
             }
             //触碰到上边界
             if (movedRec.topLeft.y <= 0) {
+              println(s"球触碰到上边界！！！")
+              this.direction = -this.direction
               this.position = Point(this.position.x, radius)
-              quadTree.updateObject(oldOb, this)
+              quadTree.updateObject(this)
 
             }
             //从下边界消失
             if (movedRec.topLeft.y >= boundary.y) {
+              println(s"球从下边界消失！！！")
               this.isMissed = 1
             }
 
@@ -98,31 +107,31 @@ case class Ball(
         }
 
       } else { //球在板上
-        val moveDistance = orbsConfig.getPlankMoveDistanceByFrame.rotate(direction)
-        val horizontalDistance = moveDistance.copy(y = 0)
-        val verticalDistance = moveDistance.copy(x = 0)
-        List(horizontalDistance, verticalDistance).foreach { d =>
-          if (d.x != 0 || d.y != 0) {
-            this.position = this.position + d
-            val movedRec = Rectangle(this.position - Point(radius, radius), this.position + Point(radius, radius))
-            if (movedRec.topLeft > Point(0, 0) && movedRec.downRight < boundary) {
-              quadTree.updateObject(oldOb, this)
-            }
-            //板子触碰左边界
-            if (this.position.x - plank.getWidth * 0.5 <= 0) {
-              this.position = Point(plank.getWidth * 0.5.toFloat, this.position.y)
-              quadTree.updateObject(oldOb, this)
-            }
-            //板子触碰右边界
-            if (this.position.x + plank.getWidth * 0.5 >= boundary.x) {
-              this.position = Point(boundary.x - plank.getWidth * 0.5.toFloat, this.position.y)
-              quadTree.updateObject(oldOb, this)
-            }
+        if (plank.isMove == 1) {
+          val moveDistance = orbsConfig.getPlankMoveDistanceByFrame.rotate(direction)
+          val horizontalDistance = moveDistance.copy(y = 0)
+          val verticalDistance = moveDistance.copy(x = 0)
+          List(horizontalDistance, verticalDistance).foreach { d =>
+            if (d.x != 0 || d.y != 0) {
+              this.position = this.position + d
+              val movedRec = Rectangle(this.position - Point(radius, radius), this.position + Point(radius, radius))
+              if (movedRec.topLeft > Point(0, 0) && movedRec.downRight < boundary) {
+                quadTree.updateObject(this)
+              }
+              //板子触碰左边界
+              if (this.position.x - plank.getWidth * 0.5 <= 0) {
+                this.position = Point(plank.getWidth * 0.5.toFloat, this.position.y)
+                quadTree.updateObject(this)
+              }
+              //板子触碰右边界
+              if (this.position.x + plank.getWidth * 0.5 >= boundary.x) {
+                this.position = Point(boundary.x - plank.getWidth * 0.5.toFloat, this.position.y)
+                quadTree.updateObject(this)
+              }
 
+            }
           }
         }
-
-
       }
 
     }
