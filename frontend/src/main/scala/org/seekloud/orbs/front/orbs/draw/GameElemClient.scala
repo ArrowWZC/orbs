@@ -18,7 +18,7 @@ trait GameElemClient {
   val ballImg = drawFrame.createImage(Routes.imgPath("ball.png"))
 
 
-  def drawArcRect(r: Double, width: Double, height: Double, left: Double, top: Double): Unit = {
+  def drawArcRect(ctx: MiddleContext, r: Double, width: Double, height: Double, left: Double, top: Double): Unit = {
     if (width >= 2 * r) {
       ctx.save()
       ctx.beginPath()
@@ -37,9 +37,9 @@ trait GameElemClient {
     val barLeft = plank.getPlankState.position.x - plank.getWidth / 2
     val barTop = plank.getPlankState.position.y - plank.getHeight / 2
     ctx.setFill("#616161")
-    drawArcRect(r, plank.getWidth, plank.getHeight, barLeft, barTop)
+    drawArcRect(ctx, r, plank.getWidth, plank.getHeight, barLeft, barTop)
     ctx.setFill("#c7c7c7")
-    drawArcRect(r - 1, plank.getWidth - 2, plank.getHeight - 2, barLeft + 1, barTop + 1)
+    drawArcRect(ctx, r - 1, plank.getWidth - 2, plank.getHeight - 2, barLeft + 1, barTop + 1)
 
   }
 
@@ -49,7 +49,7 @@ trait GameElemClient {
     }
   }
 
-  def drawABall(ball: Ball, ctx: MiddleContext, canvasUnit: Float, canvasBounds: Point) = {
+  def drawABall(ball: Ball, ctx: MiddleContext, canvasUnit: Float, canvasBounds: Point): Unit = {
     val r = config.getBallRadius
     val sx = ball.getBallState.position.x - r
     val sy = ball.getBallState.position.y - r
@@ -62,7 +62,7 @@ trait GameElemClient {
     }
   }
 
-  def drawBall(id: String, ctx: MiddleContext, canvasUnit: Float, canvasBounds: Point) = {
+  def drawBall(id: String, ctx: MiddleContext, canvasUnit: Float, canvasBounds: Point): Unit = {
     ballMap.filter(_._1.startsWith(id)).foreach { b =>
       drawABall(b._2, ctx, canvasUnit, canvasBounds)
     }

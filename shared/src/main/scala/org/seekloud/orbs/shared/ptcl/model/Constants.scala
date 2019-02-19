@@ -36,5 +36,7 @@ object Constants {
 
   val canvasUnitPerLine = Canvas.width //可视窗口每行显示多少个canvasUnit
 
+  val catchBallBuffer = 2
+
 
 }

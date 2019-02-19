@@ -147,9 +147,19 @@ case class OrbsSchemaServerImpl(
 
   override protected def plankMissBallCallBack(ball: Ball)(plank: Plank): Unit = {
     super.plankMissBallCallBack(ball)(plank)
-    val event = PlankMissBall(ball.pId, ball.bId, systemFrame)
-    addGameEvent(event)
-    dispatch(event)
+    val random = new Random()
+    if (playerIdMap.contains(plank.pId)) {
+      val playerId = playerIdMap(plank.pId)._1
+      val plankPosition = plankMap(playerId).getPlankState.position
+      val ballPosition = Point(plankPosition.x, plankPosition.y - config.getBallRadius - (config.getPlankHeight / 2.0).toFloat)
+      val ballDirection = (random.nextFloat() * math.Pi * 0.5 - 3 / 4.0 * math.Pi).toFloat
+      val ballState = BallState(ball.pId, ballIdGenerator.getAndIncrement(), 1, ballPosition, ballDirection, 0, 0, 0)
+      val event = PlankMissBall(ball.pId, ball.bId, ballState, systemFrame)
+      addGameEvent(event)
+      dispatch(event)
+    } else {
+      log.debug(s"playerId ${plank.pId} is missing in playerIdMap.")
+    }
   }
 
   override def clearEventWhenUpdate(): Unit = {

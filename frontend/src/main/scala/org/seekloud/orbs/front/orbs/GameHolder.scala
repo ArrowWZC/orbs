@@ -15,7 +15,7 @@ import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol.{UserMapReq, WsMsgSer
   * Date: 2019/2/6
   * Time: 14:14
   */
-abstract class GameHolder(canvasName: String) extends NetworkInfo {
+abstract class GameHolder(canvasName: String, opCanvasName: String) extends NetworkInfo {
 
   println(s"GameHolder $canvasName...")
 
@@ -24,8 +24,10 @@ abstract class GameHolder(canvasName: String) extends NetworkInfo {
   /*canvas*/
   protected var canvasWidth = Constants.Canvas.width
   protected var canvasHeight =Constants.Canvas.height
-  protected val canvas = drawFrame.createCanvas(canvasName, canvasWidth, canvasHeight)
-  protected val ctx = canvas.getCtx
+  protected val myCanvas = drawFrame.createCanvas(canvasName, canvasWidth, canvasHeight)
+  protected val myCtx = myCanvas.getCtx
+  protected val opCanvas = drawFrame.createCanvas(opCanvasName, canvasWidth, canvasHeight)
+  protected val opCtx = opCanvas.getCtx
 
   protected var canvasBoundary = Point(Constants.Canvas.width, Constants.Canvas.height)
   protected var canvasUnit = canvasWidth / Constants.canvasUnitPerLine
@@ -71,8 +73,8 @@ abstract class GameHolder(canvasName: String) extends NetworkInfo {
       canvasUnit = canvasWidth / perLine
       canvasBoundary = Point(canvasWidth, canvasHeight)
       canvasBounds = canvasBoundary / canvasUnit
-      canvas.setWidth(canvasWidth)
-      canvas.setHeight(canvasHeight)
+      myCanvas.setWidth(canvasWidth)
+      myCanvas.setHeight(canvasHeight)
       orbsSchemaOpt.foreach(_.updateSize(canvasBoundary, canvasUnit))
     }
   }
@@ -137,9 +139,7 @@ abstract class GameHolder(canvasName: String) extends NetworkInfo {
   def drawGameByTime(offsetTime: Long, canvasUnit: Float, canvasBounds: Point): Unit = {
     orbsSchemaOpt.foreach { orbsSchema =>
       if (orbsSchema.plankMap.contains(myId)) {
-        //TODO 渲染
         orbsSchema.drawGame(offsetTime, canvasUnit, canvasBounds)
-
       } else {
         orbsSchema.drawGameLoading()
       }

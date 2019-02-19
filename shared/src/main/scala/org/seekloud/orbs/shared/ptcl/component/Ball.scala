@@ -27,7 +27,8 @@ case class Ball(
   var level: Byte,
   var isAttack: Byte, //0: false, 1: true
   var isMove: Byte, //0: false, 1: true
-  var isMissed: Byte //0: false, 1: true
+  var isMissed: Byte, //0: false, 1: true
+  var lastCatchFrame: Int = 0
 ) extends CircleObjectOfGame {
 
   def this(config: OrbsConfig, ballState: BallState) = {
@@ -46,7 +47,6 @@ case class Ball(
     this.isAttack = 1
     //    this.direction = (random.nextFloat() * math.Pi * 0.5 - 3 / 4.0 * math.Pi).toFloat
     this.direction = (-7 / 20.0 * math.Pi).toFloat
-    println(s"gen direction: $direction")
   }
 
   //0: left，1：right
@@ -57,6 +57,10 @@ case class Ball(
 
   def stopMoving(): Unit = {
     isMove = 0
+  }
+
+  def setCatchFrame(frame: Int): Unit = {
+    lastCatchFrame = frame
   }
 
 
@@ -70,7 +74,7 @@ case class Ball(
     * @param tp 反射面的类型 0：垂直，1：水平
     **/
   def reflect(tp: Int): Unit = {
-    println(s"ball-$bId reflect original: $direction")
+//    println(s"ball-$bId reflect original: $direction")
     tp match {
       case 0 =>
         if (this.direction > 0) {
@@ -82,15 +86,15 @@ case class Ball(
         this.direction = -this.direction
       case _ =>
     }
-    println(s"ball-$bId reflect current:$direction")
+//    println(s"ball-$bId reflect current:$direction")
   }
 
   def move(boundary: Point, quadTree: QuadTree, plank: Plank)(implicit orbsConfig: OrbsConfig): Unit = {
     //isAttack的时候速度是球本身的速度，否则按照板子的速度
     if (isMove == 1) {
       if (isAttack == 1) { //球不在板上
-        println(s"ball-$bId direction: ${direction / math.Pi}Pi")
-        println(s"ball-$bId position: $position")
+//        println(s"ball-$bId direction: ${direction / math.Pi}Pi")
+//        println(s"ball-$bId position: $position")
         var isVReflect = false
         var isHReflect = false
         val moveDistance = orbsConfig.getBallMoveDistanceByFrame(level).rotate(direction)

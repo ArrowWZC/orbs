@@ -16,7 +16,7 @@ import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol._
   * Date: 2019/2/15
   * Time: 15:51
   */
-class GameHolder4Play(name: String) extends GameHolder(name) {
+class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oName) {
 
   private[this] val actionSerialNumGenerator = new AtomicInteger(0)
   private val preExecuteFrameOffset = org.seekloud.orbs.shared.ptcl.model.Constants.preExecuteFrameOffset
@@ -25,7 +25,7 @@ class GameHolder4Play(name: String) extends GameHolder(name) {
   def start(name: String): Unit = {
     println(s"start $name; firstCome $firstCome")
     myName = name
-    canvas.getCanvas.focus()
+    myCanvas.getCanvas.focus()
     if (firstCome) {
       addActionListenEvent()
       val url = Routes.wsJoinGameUrl(name)
@@ -53,6 +53,7 @@ class GameHolder4Play(name: String) extends GameHolder(name) {
       opId = Some(playerId)
       opName = Some(name)
       opByteId = Some(byteId)
+      orbsSchemaOpt.foreach(_.setOpId(playerId, name))
     }
 
   }
@@ -70,7 +71,7 @@ class GameHolder4Play(name: String) extends GameHolder(name) {
           opName = Some(msg.playerIdMap.filterNot(_._1 == msg.byteId).head._2._2)
           opByteId = Some(msg.playerIdMap.filterNot(_._1 == msg.byteId).head._1)
         }
-        orbsSchemaOpt = Some(OrbsSchemaClientImpl(drawFrame, ctx, msg.config, myId, myName, opId, opName, canvasBoundary, canvasUnit))
+        orbsSchemaOpt = Some(OrbsSchemaClientImpl(drawFrame, myCtx, opCtx, msg.config, myId, myName, opId, opName, canvasBoundary, canvasUnit))
         if (timer != 0) {
           dom.window.clearInterval(timer)
           orbsSchemaOpt.foreach { orbsSchema =>
@@ -90,7 +91,15 @@ class GameHolder4Play(name: String) extends GameHolder(name) {
 
       case msg: UserMap =>
         orbsSchemaOpt.foreach { orbsSchema =>
-          msg.playerIdMap.foreach(p => orbsSchema.playerIdMap.put(p._1, p._2))
+          msg.playerIdMap.foreach{
+            p =>
+              orbsSchema.playerIdMap.put(p._1, p._2)
+              if (p._1 != myByteId) {
+                opByteId = Some(p._1)
+                opId = Some(p._2._1)
+                opName = Some(p._2._2)
+              }
+          }
           orbsSchema.needUserMap = false
         }
 
@@ -142,8 +151,8 @@ class GameHolder4Play(name: String) extends GameHolder(name) {
   }
 
   def addActionListenEvent(): Unit = {
-    canvas.getCanvas.focus()
-    canvas.getCanvas.onmousedown = { (e: dom.MouseEvent) =>
+    myCanvas.getCanvas.focus()
+    myCanvas.getCanvas.onmousedown = { (e: dom.MouseEvent) =>
       orbsSchemaOpt.foreach { orbsSchema =>
         val event = MouseClickLeft(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
         webSocketClient.sendMsg(event)
@@ -151,7 +160,7 @@ class GameHolder4Play(name: String) extends GameHolder(name) {
       }
     }
 
-    canvas.getCanvas.onkeydown = { (e: dom.KeyboardEvent) =>
+    myCanvas.getCanvas.onkeydown = { (e: dom.KeyboardEvent) =>
       orbsSchemaOpt.foreach { orbsSchema =>
         if (e.keyCode == KeyCode.Left) {
           val event = PlankLeftKeyDown(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
@@ -169,7 +178,7 @@ class GameHolder4Play(name: String) extends GameHolder(name) {
       }
     }
 
-    canvas.getCanvas.onkeyup = { (e: dom.KeyboardEvent) =>
+    myCanvas.getCanvas.onkeyup = { (e: dom.KeyboardEvent) =>
       orbsSchemaOpt.foreach { orbsSchema =>
         if (e.keyCode == KeyCode.Left) {
           val event = PlankLeftKeyUp(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)

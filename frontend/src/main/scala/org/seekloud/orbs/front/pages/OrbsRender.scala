@@ -17,15 +17,17 @@ import scala.xml.Elem
   */
 class OrbsRender(playerName: String) extends Page {
 
-  private val canvasName = "OrbsView"
+  private val myCanvasName = "myView"
+  private val opCanvasName = "opView"
 
 
-  private val canvas = <canvas id={canvasName} tabindex="1"></canvas>
+  private val canvas = <canvas id={myCanvasName} tabindex="1"></canvas>
+  private val opCanvas = <canvas id={opCanvasName} tabindex="1"></canvas>
 
   def init(): Unit = {
     println(s"OrbsRender init...")
 
-    val gameHolder = new GameHolder4Play(canvasName)
+    val gameHolder = new GameHolder4Play(myCanvasName, opCanvasName)
     gameHolder.start(playerName)
   }
 
@@ -33,7 +35,8 @@ class OrbsRender(playerName: String) extends Page {
   override def render: Elem = {
     Shortcut.scheduleOnce(() => init(), 0)
     <div>
-     {canvas}
+      {canvas}
+      {opCanvas}
     </div>
   }
 

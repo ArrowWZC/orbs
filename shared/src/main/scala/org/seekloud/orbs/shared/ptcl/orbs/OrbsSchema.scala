@@ -2,7 +2,7 @@ package org.seekloud.orbs.shared.ptcl.orbs
 
 import org.seekloud.orbs.shared.ptcl.component._
 import org.seekloud.orbs.shared.ptcl.config.OrbsConfig
-import org.seekloud.orbs.shared.ptcl.model.Constants.reflector
+import org.seekloud.orbs.shared.ptcl.model.Constants.{reflector, catchBallBuffer}
 import org.seekloud.orbs.shared.ptcl.model.{Point, Rectangle}
 import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol._
 import org.seekloud.orbs.shared.ptcl.util.QuadTree
@@ -189,6 +189,9 @@ trait OrbsSchema {
         val ball = ballMap.filter(b => b._1.split("&").head == pId && b._2.bId == e.bId).values.headOption
         ballMap.remove(pId + "&" + e.bId)
         ball.foreach(quadTree.remove)
+        val newBall = new Ball(config, e.newBall)
+        ballMap.put(pId + "&" + newBall.bId, newBall)
+        quadTree.insert(newBall)
       case Left(_) =>
         debug(s"ball [${e.playerId}] not exist in playerIdMap.")
 
@@ -211,7 +214,10 @@ trait OrbsSchema {
 
 
   protected def attackPlankCallBack(ball: Ball)(plank: Plank): Unit = {
-    ball.reflect(reflector.horizontal)
+    if (systemFrame - ball.lastCatchFrame > catchBallBuffer) {
+      ball.reflect(reflector.horizontal)
+      ball.setCatchFrame(systemFrame)
+    }
   }
 
   /*后台重写*/
@@ -292,6 +298,18 @@ trait OrbsSchema {
                   }
                 case None =>
                   debug(s"handle action cannot find ball [$pId]")
+                  actions match {
+                    case _: PlankLeftKeyDown =>
+                      plank.setMoveDirection(0)
+                    case _: PlankLeftKeyUp =>
+                      plank.stopMoving()
+                    case _: PlankRightKeyDown =>
+                      plank.setMoveDirection(1)
+                    case _: PlankRightKeyUp =>
+                      plank.stopMoving()
+                    case _: MouseClickLeft =>
+
+                  }
               }
 
             case None =>

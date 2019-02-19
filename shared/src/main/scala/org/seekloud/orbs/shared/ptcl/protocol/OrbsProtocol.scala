@@ -99,7 +99,7 @@ object OrbsProtocol {
 
   final case class BrickBeAttacked(playerId: Byte, rId: Int, override val frame: Int = 0) extends UserEvent with WsMsgServer
 
-  final case class PlankMissBall(playerId: Byte, bId: Int, override val frame: Int = 0) extends UserEvent with WsMsgServer
+  final case class PlankMissBall(playerId: Byte, bId: Int, newBall: BallState, override val frame: Int = 0) extends UserEvent with WsMsgServer
 
   final case class PlankLeftKeyDown(playerId: Byte, override val frame: Int, override val serialNum: Byte) extends UserActionEvent with WsMsgFront with WsMsgServer
 
