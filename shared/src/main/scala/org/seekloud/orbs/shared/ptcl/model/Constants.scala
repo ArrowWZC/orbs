@@ -46,7 +46,7 @@ object Constants {
     val isTrue: Byte = 1
   }
 
-  val life: Byte = 3 //玩家生命值
+  val life: Byte = 5 //玩家生命值
 
   val preExecuteFrameOffset = 2 //预执行2帧
 

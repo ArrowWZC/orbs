@@ -43,7 +43,7 @@ trait OrbsSchema {
 
   var latestBricksDownFrame: Int = 0
 
-  protected val brickDownInterval: Int = 10
+  protected val brickDownInterval: Int = 200
 
   /*元素*/
   val ballMap = mutable.HashMap[String, Ball]() //playerId & bId -> Ball
