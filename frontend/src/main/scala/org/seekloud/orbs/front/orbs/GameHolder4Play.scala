@@ -35,16 +35,16 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
       gameLoop()
     }
     else if (webSocketClient.getWsState) {
-      println("restart...")
-      reStart()
+//      println("restart...")
+//      reStart()
     } else {
       JsFunc.alert("网络连接失败，请重新刷新")
     }
   }
 
-  def reStart(): Unit = {
-    webSocketClient.sendMsg(RestartGame)
-  }
+//  def reStart(): Unit = {
+//    webSocketClient.sendMsg(RestartGame())
+//  }
 
   def getActionSerialNum: Byte = (actionSerialNumGenerator.getAndIncrement() % 127).toByte
 
@@ -54,9 +54,9 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
     } else {
       opId = Some(playerId)
       opName = Some(name)
-      opByteId = Some(byteId)
+      if (gameState != GameState.stop) opByteId = Some(byteId) //opByteId用来判断对手是否重启
       orbsSchemaOpt.foreach(_.setOpId(playerId, name))
-      gameState = GameState.play
+      if (gameState != GameState.stop) gameState = GameState.play
     }
   }
 
@@ -126,7 +126,27 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
 
       case msg: PingPackage =>
         receivePingPackage(msg)
+
       case msg: UserActionEvent =>
+        msg match {
+          case e: RestartGame =>
+            if (e.playerId == myByteId) {
+//              println(s"收到自己的重启消息！")
+              opByteId match {
+                case Some(_) => gameState = GameState.play
+                case None => gameState = GameState.wait4Opponent
+              }
+            } else { //收到对手RestartGame消息
+//              println(s"收到对手的重启消息")
+              opByteId = Some(e.playerId)
+              if (gameState == GameState.wait4Opponent) {
+                gameState = GameState.play
+              } else {
+                gameState = GameState.wait4Relive
+              }
+            }
+          case _ =>
+        }
         orbsSchemaOpt.foreach(_.receiveUserEvent(msg))
       case msg: GameEvent =>
         msg match {
@@ -153,6 +173,17 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
                 orbsSchema.opLeft = true
             }
 
+          case e: PlayerWin =>
+//            println(s"player-${e.playerId} win...")
+//            dom.window.setTimeout(() =>
+//              {
+//                gameState = GameState.stop
+//                opByteId = None
+//              }, 500)
+            gameState = GameState.stop
+//            println(s"win后gameState: $gameState")
+            opByteId = None
+
           case _ =>
 
         }
@@ -174,26 +205,37 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
       orbsSchemaOpt.foreach { orbsSchema =>
         val random = new Random()
         val initDirection = (random.nextFloat() * math.Pi * 0.5 - 3 / 4.0 * math.Pi).toFloat
-        val event = MouseClickLeft(myByteId, initDirection, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
-        webSocketClient.sendMsg(event)
-        orbsSchema.preExecuteUserEvent(event)
+        if (gameState == GameState.play) {
+          val event = MouseClickLeft(myByteId, initDirection, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
+          webSocketClient.sendMsg(event)
+          orbsSchema.preExecuteUserEvent(event)
+        }
       }
     }
 
     myCanvas.getCanvas.onkeydown = { (e: dom.KeyboardEvent) =>
       orbsSchemaOpt.foreach { orbsSchema =>
         if (e.keyCode == KeyCode.Left) {
-          val event = PlankLeftKeyDown(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
-          webSocketClient.sendMsg(event)
-          orbsSchema.preExecuteUserEvent(event)
-
+          if (gameState == GameState.play) {
+            val event = PlankLeftKeyDown(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
+            webSocketClient.sendMsg(event)
+            orbsSchema.preExecuteUserEvent(event)
+          }
         } else if (e.keyCode == KeyCode.Right) {
-          val event = PlankRightKeyDown(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
-          webSocketClient.sendMsg(event)
-          orbsSchema.preExecuteUserEvent(event)
+          if (gameState == GameState.play) {
+            val event = PlankRightKeyDown(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
+            webSocketClient.sendMsg(event)
+            orbsSchema.preExecuteUserEvent(event)
+          }
 
         } else if (e.keyCode == KeyCode.Space) {
           //TODO 判断重启
+          e.preventDefault()
+          if (orbsSchema.episodeWinner.nonEmpty && (gameState == GameState.stop || gameState == GameState.wait4Relive)) {
+            val event = RestartGame(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
+            webSocketClient.sendMsg(event)
+            orbsSchema.preExecuteUserEvent(event)
+          }
         }
       }
     }
@@ -201,13 +243,17 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
     myCanvas.getCanvas.onkeyup = { (e: dom.KeyboardEvent) =>
       orbsSchemaOpt.foreach { orbsSchema =>
         if (e.keyCode == KeyCode.Left) {
-          val event = PlankLeftKeyUp(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
-          webSocketClient.sendMsg(event)
-          orbsSchema.preExecuteUserEvent(event)
+          if (gameState == GameState.play) {
+            val event = PlankLeftKeyUp(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
+            webSocketClient.sendMsg(event)
+            orbsSchema.preExecuteUserEvent(event)
+          }
         } else if (e.keyCode == KeyCode.Right) {
-          val event = PlankRightKeyUp(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
-          webSocketClient.sendMsg(event)
-          orbsSchema.preExecuteUserEvent(event)
+          if (gameState == GameState.play) {
+            val event = PlankRightKeyUp(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
+            webSocketClient.sendMsg(event)
+            orbsSchema.preExecuteUserEvent(event)
+          }
         }
       }
     }

@@ -100,7 +100,7 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
   protected def wsMessageHandler(e: WsMsgServer)
 
 
-  def closeHolder() = {
+  def closeHolder(): Unit = {
     dom.window.cancelAnimationFrame(nextFrame)
     Shortcut.cancelSchedule(timer)
     webSocketClient.closeWs
@@ -144,13 +144,24 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
 
       case GameState.stop =>
       //TODO
+        orbsSchemaOpt.foreach { orbsSchema =>
+          if (orbsSchema.episodeWinner.isEmpty) {
+            orbsSchema.update()
+          }
+        }
+      case GameState.wait4Relive =>
+        orbsSchemaOpt.foreach(_.drawWait4Relive(myCtx))
+        orbsSchemaOpt.foreach(_.drawOpRestart(opCtx))
+
     }
   }
 
   def drawGameByTime(offsetTime: Long, canvasUnit: Float, canvasBounds: Point): Unit = {
     orbsSchemaOpt.foreach { orbsSchema =>
       if (orbsSchema.plankMap.contains(myId)) {
-        orbsSchema.drawGame(offsetTime, canvasUnit, canvasBounds)
+        if (gameState != GameState.wait4Opponent && gameState != GameState.wait4Relive) {
+          orbsSchema.drawGame(offsetTime, canvasUnit, canvasBounds)
+        }
       } else {
         if (gameState != GameState.wait4Opponent) {
           orbsSchema.drawGameLoading(myCtx)

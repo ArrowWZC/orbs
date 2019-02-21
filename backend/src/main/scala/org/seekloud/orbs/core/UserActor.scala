@@ -170,8 +170,8 @@ object UserActor {
             case Some(event: UserActionEvent) =>
               roomActor ! RoomActor.WsMessage(playerId, event)
 
-            case Some(RestartGame) =>
-              roomManager ! RoomManager.ReStartJoinRoom(userInfo.playerId, userInfo.name, ctx.self)
+//            case Some(RestartGame) =>
+//              roomManager ! RoomManager.ReStartJoinRoom(userInfo.playerId, userInfo.name, ctx.self)
 
             case Some(UserMapReq) =>
               roomActor ! RoomActor.UserMap(ctx.self)

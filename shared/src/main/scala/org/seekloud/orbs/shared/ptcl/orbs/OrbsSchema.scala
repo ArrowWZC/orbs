@@ -2,7 +2,7 @@ package org.seekloud.orbs.shared.ptcl.orbs
 
 import org.seekloud.orbs.shared.ptcl.component._
 import org.seekloud.orbs.shared.ptcl.config.OrbsConfig
-import org.seekloud.orbs.shared.ptcl.model.Constants.{reflector, catchBallBuffer}
+import org.seekloud.orbs.shared.ptcl.model.Constants.{reflector, catchBallBuffer, life}
 import org.seekloud.orbs.shared.ptcl.model.{Point, Rectangle}
 import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol._
 import org.seekloud.orbs.shared.ptcl.util.QuadTree
@@ -88,6 +88,14 @@ trait OrbsSchema {
   }
 
   protected final def handleUserEnterRoomEvent(e: UserEnterRoom): Unit = {
+    plankMap.get(e.playerId).foreach { p =>
+      plankMap.remove(e.playerId)
+      quadTree.remove(p)
+    }
+    ballMap.filter(_._1.startsWith(e.playerId)).foreach { b =>
+      ballMap.remove(b._1)
+      quadTree.remove(b._2)
+    }
     playerIdMap.put(e.byteId, (e.playerId, e.name))
     val plank = new Plank(config, e.plankState)
     val ball = new Ball(config, e.ballState)
@@ -138,7 +146,13 @@ trait OrbsSchema {
   }
 
   protected final def handleGenerateBrickEvent(e: GenerateBrick): Unit = {
-//    println(s"Generate bricks, frame: $systemFrame")
+//    println(s"Generate bricks, frame: $systemFrame, brickSize: ${e.brick.size}, curBrickSize: ${brickMap.size}")
+    if (e.isRestart.contains(1)) {
+      brickMap.filter(_._2.pId == e.playerId).foreach { r =>
+        brickMap.remove(r._1)
+        quadTree.remove(r._2)
+      }
+    }
     e.brick.foreach { b =>
       val brick = new Brick(config, b)
       val playerId = byteId2PlayerId(e.playerId)
@@ -276,11 +290,9 @@ trait OrbsSchema {
 
   protected final def handlePlayerWinEvent(e: PlayerWin): Unit = {
     //除去玩家的所有砖块，保留板子和球
+//    println(s"handle ${e.playerId} win!!!")
     episodeWinner = Some(e.playerId)
-    brickMap.foreach { brick =>
-      brickMap.remove(brick._1)
-      quadTree.remove(brick._2)
-    }
+    episodeEndInit()
   }
 
   protected final def handlePlayerWinEvent(l: List[PlayerWin]): Unit = {
@@ -293,28 +305,15 @@ trait OrbsSchema {
     }
   }
 
-//  protected final def handlePlayerLoseEvent(e: PlayerLose): Unit = {
-//
-//  }
-//
-//  protected final def handlePlayerLoseEvent(l: List[PlayerLose]): Unit = {
-//    l foreach handlePlayerLoseEvent
-//  }
-//
-//  protected final def handlePlayerLoseEventNow(): Unit = {
-//    gameEventMap.get(systemFrame).foreach { events =>
-//      handlePlayerLoseEvent(events.filter(_.isInstanceOf[PlayerLose]).map(_.asInstanceOf[PlayerLose]).reverse)
-//    }
-//  }
+  protected def handleBricksDownEventNow(): Unit = {}
 
-  protected def handleBricksDownEventNow(): Unit = {
-//    if (systemFrame - latestBricksDownFrame > brickDownInterval) {
-////      println(s"bricks down!!!!!!!!!")
-//      brickMap.values.foreach { brick =>
-//        brick.brickDown()
-//      }
-//      latestBricksDownFrame = systemFrame
-//    }
+  protected def restartCallBack(playerId: Byte): Unit = {}
+
+  protected def episodeEndInit(): Unit = {
+    brickMap.foreach { brick =>
+      brickMap.remove(brick._1)
+      quadTree.remove(brick._2)
+    }
   }
 
   protected final def handleUserActionEvent(actions: List[UserActionEvent]): Unit = {
@@ -344,6 +343,9 @@ trait OrbsSchema {
                       if (ball.isAttack == 0) ball.stopMoving()
                     case e: MouseClickLeft =>
                       ball.startAttack(e.d)
+                    case e: RestartGame =>
+                      episodeWinner = None
+                      restartCallBack(e.playerId)
 
                   }
                 case None =>
@@ -358,6 +360,9 @@ trait OrbsSchema {
                     case _: PlankRightKeyUp =>
                       plank.stopMoving()
                     case _: MouseClickLeft =>
+                    case e: RestartGame =>
+                      episodeWinner = None
+                      restartCallBack(e.playerId)
 
                   }
               }

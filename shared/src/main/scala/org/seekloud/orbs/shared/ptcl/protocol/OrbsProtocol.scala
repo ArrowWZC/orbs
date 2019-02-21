@@ -62,7 +62,7 @@ object OrbsProtocol {
   final case class UserMap(playerIdMap: List[(Byte, (String, String))] = Nil) extends WsMsgServer
 
   //生成环境元素
-  final case class GenerateBrick(override val frame: Int, playerId: Byte, brick: List[BrickState]) extends EnvironmentEvent with WsMsgServer
+  final case class GenerateBrick(override val frame: Int, playerId: Byte, brick: List[BrickState], isRestart: Option[Byte] = None) extends EnvironmentEvent with WsMsgServer
 
 
   /*快照*/
@@ -76,8 +76,6 @@ object OrbsProtocol {
 
 
 
-
-  final case object RestartGame extends WsMsgFront
 
   final case class SchemaSyncState(s: OrbsSchemaState) extends WsMsgServer
 
@@ -106,6 +104,8 @@ object OrbsProtocol {
   final case class PlankRightKeyUp(playerId: Byte, override val frame: Int, override val serialNum: Byte) extends UserActionEvent with WsMsgFront with WsMsgServer
 
   final case class MouseClickLeft(playerId: Byte, d: Float, override val frame: Int, override val serialNum: Byte) extends UserActionEvent with WsMsgFront with WsMsgServer
+
+  final case class RestartGame(playerId: Byte, override val frame: Int, override val serialNum: Byte) extends UserActionEvent with WsMsgFront with WsMsgServer
 
 
   final case class JoinGameInfo(

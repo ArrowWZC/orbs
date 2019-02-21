@@ -21,6 +21,7 @@ object Constants {
     val play = 4
     val stop = 5
     val relive = 6
+    val wait4Relive = 7
   }
 
   object Canvas {

@@ -73,6 +73,15 @@ trait BackgroundClient {
   }
 
 
+  def drawWait4Relive(ctx: MiddleContext): Unit = {
+    drawInfo(ctx, "press space to restart!")
+  }
+
+  def drawOpRestart(ctx: MiddleContext): Unit = {
+    drawInfo(ctx, "对方已准备好再来一局~")
+  }
+
+
 
 
 }

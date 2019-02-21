@@ -31,6 +31,7 @@ case class OrbsSchemaClientImpl(
 
   def drawGame(offSetTime: Long, canvasUnit: Float, canvasBounds: Point): Unit = {
     if (!waitSyncData) {
+//      println(s"episode winner: $episodeWinner")
       plankMap.get(myId) match {
         case Some(plank) =>
           if (episodeWinner.isEmpty) {
