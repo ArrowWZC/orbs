@@ -43,7 +43,7 @@ trait OrbsSchema {
 
   var latestBricksDownFrame: Int = 0
 
-  protected val brickDownInterval = 150
+  protected val brickDownInterval: Int = 10
 
   /*元素*/
   val ballMap = mutable.HashMap[String, Ball]() //playerId & bId -> Ball
@@ -307,14 +307,14 @@ trait OrbsSchema {
 //    }
 //  }
 
-  protected final def handleBricksDownEventNow(): Unit = {
-    if (systemFrame - latestBricksDownFrame > brickDownInterval) {
-//      println(s"bricks down!!!!!!!!!")
-      brickMap.values.foreach { brick =>
-        brick.brickDown()
-      }
-      latestBricksDownFrame = systemFrame
-    }
+  protected def handleBricksDownEventNow(): Unit = {
+//    if (systemFrame - latestBricksDownFrame > brickDownInterval) {
+////      println(s"bricks down!!!!!!!!!")
+//      brickMap.values.foreach { brick =>
+//        brick.brickDown()
+//      }
+//      latestBricksDownFrame = systemFrame
+//    }
   }
 
   protected final def handleUserActionEvent(actions: List[UserActionEvent]): Unit = {

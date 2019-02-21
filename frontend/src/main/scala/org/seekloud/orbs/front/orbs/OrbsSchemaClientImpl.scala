@@ -41,6 +41,8 @@ case class OrbsSchemaClientImpl(
           } else {
             if (episodeWinner.get == plank.pId) { //自己胜利
               drawPlayerWin(ctx)
+            } else if(episodeWinner.get == -1) {
+              drawEqual(ctx)
             } else { //自己失败
               drawPlayerLose(ctx)
             }
@@ -60,6 +62,8 @@ case class OrbsSchemaClientImpl(
               } else {
                 if (episodeWinner.get == plank.pId) { //对手胜利
                   drawOpponentWin(opCtx)
+                } else if(episodeWinner.get == -1) {
+                  drawEqual(opCtx)
                 } else { //对手失败
                   drawOpponentLose(opCtx)
                 }

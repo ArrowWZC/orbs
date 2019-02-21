@@ -44,6 +44,10 @@ trait BackgroundClient {
     drawInfo(ctx, GameInfo.waitOpJoin)
   }
 
+  def drawOpNotIn(ctx: MiddleContext): Unit = {
+    drawInfo(ctx, GameInfo.opNotIn)
+  }
+
   def drawPlayerLeave(ctx: MiddleContext): Unit = {
     drawInfo(ctx, GameInfo.opponentLeft)
   }
@@ -62,6 +66,10 @@ trait BackgroundClient {
 
   def drawOpponentLose(ctx: MiddleContext): Unit = {
     drawInfo(ctx, "Opponent Lose!!!")
+  }
+
+  def drawEqual(ctx: MiddleContext): Unit = {
+    drawInfo(ctx, "平局！！！")
   }
 
 

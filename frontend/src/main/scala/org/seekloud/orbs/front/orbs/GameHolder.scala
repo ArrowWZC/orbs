@@ -121,12 +121,14 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
         orbsSchemaOpt.foreach {
           _.drawGameLoading(myCtx)
         }
+      case GameState.wait4Opponent =>
+        orbsSchemaOpt.foreach(_.drawWaitingOp(myCtx))
+        orbsSchemaOpt.foreach(_.drawOpNotIn(opCtx))
+
       case GameState.loadingPlay =>
         orbsSchemaOpt.foreach {
           _.drawGameLoading(myCtx)
         }
-      case GameState.stop =>
-      //TODO
 
       case GameState.play =>
         orbsSchemaOpt.foreach { orbsSchema =>
@@ -139,6 +141,9 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
         }
         logicFrameTime = System.currentTimeMillis()
         ping()
+
+      case GameState.stop =>
+      //TODO
     }
   }
 
@@ -147,7 +152,9 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
       if (orbsSchema.plankMap.contains(myId)) {
         orbsSchema.drawGame(offsetTime, canvasUnit, canvasBounds)
       } else {
-        orbsSchema.drawGameLoading(myCtx)
+        if (gameState != GameState.wait4Opponent) {
+          orbsSchema.drawGameLoading(myCtx)
+        }
       }
     }
   }

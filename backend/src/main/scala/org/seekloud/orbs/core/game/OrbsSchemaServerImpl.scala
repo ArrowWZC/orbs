@@ -3,6 +3,7 @@ package org.seekloud.orbs.core.game
 import java.util.concurrent.atomic.AtomicInteger
 
 import akka.actor.typed.ActorRef
+import org.seekloud.orbs.common.AppSettings
 import org.slf4j.Logger
 import org.seekloud.orbs.core.{RoomActor, UserActor}
 import org.seekloud.orbs.shared.ptcl.component._
@@ -82,19 +83,20 @@ case class OrbsSchemaServerImpl(
       val y = (startY + (2 * (yIndex + 1) - 1) * (brickHeight / 2.0)).toFloat
       Point(x, y)
     }
+
     var bricks = List[BrickState]()
     (1 to config.getBrickMax).foreach {
       index =>
         val xIndex = if (index % config.getBrickXMax != 0) index % config.getBrickXMax else config.getBrickXMax
         val yIndex = if (index % config.getBrickYMax != 0) index / config.getBrickYMax else index / config.getBrickYMax - 1
         val brickPosition = genPosition(xIndex, yIndex)
-//        val random = new Random()
-//        val brickColor = (random.nextInt(5) + 1).toByte
+        //        val random = new Random()
+        //        val brickColor = (random.nextInt(5) + 1).toByte
         val brickColor = (yIndex + 1).toByte
         val brickState = BrickState(byteId, brickIdGenerator.getAndIncrement(), 0, brickPosition, brickColor)
-//        val brick = new Brick(config, brickState)
-//        brickMap.put(playerId, brick)
-//        quadTree.insert(brick)
+        //        val brick = new Brick(config, brickState)
+        //        brickMap.put(playerId, brick)
+        //        quadTree.insert(brick)
         bricks = brickState :: bricks
     }
     bricks
@@ -164,44 +166,119 @@ case class OrbsSchemaServerImpl(
     }
   }
 
+  override protected def handleBricksDownEventNow(): Unit = {
+    super.handleBricksDownEventNow()
+    if (systemFrame - latestBricksDownFrame > brickDownInterval && systemFrame - latestUserJoinFrame > Constants.preExecuteFrameOffset) {
+      if (plankMap.size == AppSettings.personLimit) {
+        brickMap.values.foreach { brick =>
+          brick.brickDown()
+        }
+        val data = getOrbsSchemaState
+        dispatch(SchemaSyncState(data))
+        latestBricksDownFrame = systemFrame
+      }
+    }
+  }
+
   override protected def handleEpisodeEndNow(): Unit = {
-//    println(s"handleEpisodeEndNow, frame: $systemFrame")
+    //    println(s"handleEpisodeEndNow, frame: $systemFrame")
     // DEBUG 砖块要3帧的时候才生成，用户第1帧加入的，中间2帧无砖块
     super.handleEpisodeEndNow()
-    if (systemFrame - latestUserJoinFrame > Constants.preExecuteFrameOffset) {
+    if (systemFrame - latestUserJoinFrame > Constants.preExecuteFrameOffset && episodeWinner.isEmpty) {
+      var brickWinner: Option[Plank] = None
+      var downLoser: Option[Plank] = None
+      var lifeLoser: Option[Plank] = None
+      var isEqual: Boolean = false
       plankMap.foreach { plank =>
         val playerBricks = brickMap.filter(_._1.startsWith(plank._1))
         //玩家胜利条件检测
         if (playerBricks.isEmpty) {
-          val event = PlayerWin(plank._2.pId, systemFrame)
-          addGameEvent(event)
-          dispatch(event)
+          if (brickWinner.isEmpty) {
+            isEqual = false
+            brickWinner = Some(plank._2)
+          } else if (plank._2.ballAvailable > brickWinner.get.ballAvailable) {
+            isEqual = false
+            brickWinner = Some(plank._2)
+          } else if (plank._2.ballAvailable == brickWinner.get.ballAvailable) {
+            isEqual = true
+            brickWinner = None
+          }
+          //          val event = PlayerWin(plank._2.pId, systemFrame)
+          //          addGameEvent(event)
+          //          dispatch(event)
         } else {
+          //玩家失败条件检测 自己砖块没打完，且触底
           val bottomBrickY = playerBricks.values.map(_.getBrickState.position.y).max
           if (bottomBrickY >= plank._2.getPlankState.position.y - plank._2.getHeight / 2 - 2 * config.getBallRadius) {
-            val winner = playerIdMap.filterNot(_._1 == plank._2.pId).headOption
-            if (winner.nonEmpty) {
-              val event = PlayerWin(winner.get._1, systemFrame)
-              addGameEvent(event)
-              dispatch(event)
+            //            val winner = playerIdMap.filterNot(_._1 == plank._2.pId).headOption
+            //            if (winner.nonEmpty) {
+            //              val event = PlayerWin(winner.get._1, systemFrame)
+            //              addGameEvent(event)
+            //              dispatch(event)
+            //            }
+            if (downLoser.isEmpty) {
+              isEqual = false
+              downLoser = Some(plank._2)
+            } else if (plank._2.ballAvailable < downLoser.get.ballAvailable) {
+              isEqual = false
+              downLoser = Some(plank._2)
+            } else if (plank._2.ballAvailable == downLoser.get.ballAvailable) {
+              isEqual = true
+              downLoser = None
             }
           }
         }
         //玩家失败条件检测
-        //TODO 生命值为0，砖块触底
         if (plank._2.ballAvailable <= 0) {
-          val winner = playerIdMap.filterNot(_._1 == plank._2.pId).headOption
-          if (winner.nonEmpty) {
-            val event = PlayerWin(winner.get._1, systemFrame)
-            addGameEvent(event)
-            dispatch(event)
+          println(s"lifeLoser ball ${plank._2.ballAvailable}, frame: $systemFrame")
+          if (lifeLoser.isEmpty) {
+            isEqual = false
+            lifeLoser = Some(plank._2)
+          } else {
+            val opBricks = brickMap.filterNot(_._1.startsWith(plank._1))
+            if (playerBricks.size > opBricks.size) {
+              isEqual = false
+              lifeLoser = Some(plank._2)
+            } else if (playerBricks.size == opBricks.size) {
+              isEqual = true
+              lifeLoser = None
+            }
           }
+
+          //          val winner = playerIdMap.filterNot(_._1 == plank._2.pId).headOption
+          //          if (winner.nonEmpty) {
+          //            val event = PlayerWin(winner.get._1, systemFrame)
+          //            addGameEvent(event)
+          //            dispatch(event)
+          //          }
         }
-
-
       }
-    }
 
+      if (brickWinner.nonEmpty) {
+        val event = PlayerWin(brickWinner.get.pId, systemFrame + Constants.preExecuteFrameOffset)
+        addGameEvent(event)
+        dispatch(event)
+      } else if (downLoser.nonEmpty) {
+        val winner = playerIdMap.filterNot(_._1 == downLoser.get.pId).headOption
+        if (winner.nonEmpty) {
+          val event = PlayerWin(winner.get._1, systemFrame + Constants.preExecuteFrameOffset)
+          addGameEvent(event)
+          dispatch(event)
+        }
+      } else if (lifeLoser.nonEmpty) {
+        val winner = playerIdMap.filterNot(_._1 == lifeLoser.get.pId).headOption
+        if (winner.nonEmpty) {
+          val event = PlayerWin(winner.get._1, systemFrame + Constants.preExecuteFrameOffset)
+          addGameEvent(event)
+          dispatch(event)
+        }
+      } else if (isEqual) {
+        val event = PlayerWin(-1, systemFrame + Constants.preExecuteFrameOffset)
+        addGameEvent(event)
+        dispatch(event)
+      }
+
+    }
 
 
   }
@@ -216,7 +293,6 @@ case class OrbsSchemaServerImpl(
   private def init(): Unit = {
     clearEventWhenUpdate()
   }
-
 
 
 }

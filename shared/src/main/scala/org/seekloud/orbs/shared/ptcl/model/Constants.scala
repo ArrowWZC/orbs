@@ -36,6 +36,7 @@ object Constants {
   object GameInfo {
     val linking = "请稍等，正在连接服务器..."
     val waitOpJoin = "等待对手加入..."
+    val opNotIn = "暂时无人加入。。。"
     val opponentLeft = "您的对手已离开！"
   }
 
@@ -45,7 +46,7 @@ object Constants {
     val isTrue: Byte = 1
   }
 
-  val life: Byte = 10 //玩家生命值
+  val life: Byte = 3 //玩家生命值
 
   val preExecuteFrameOffset = 2 //预执行2帧
 

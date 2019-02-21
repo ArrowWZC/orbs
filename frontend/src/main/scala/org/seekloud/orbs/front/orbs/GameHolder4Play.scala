@@ -56,6 +56,7 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
       opName = Some(name)
       opByteId = Some(byteId)
       orbsSchemaOpt.foreach(_.setOpId(playerId, name))
+      gameState = GameState.play
     }
   }
 
@@ -92,7 +93,8 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
             msg.playerIdMap.foreach(p => orbsSchema.playerIdMap.put(p._1, p._2))
           }
         }
-        gameState = GameState.play
+        if (opId.isEmpty) gameState = GameState.wait4Opponent else gameState = GameState.play
+//        gameState = GameState.play
         if (nextFrame == 0) nextFrame = dom.window.requestAnimationFrame(gameRender())
         firstCome = false
 
@@ -141,7 +143,6 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
 
             }
           case e: UserLeftRoom =>
-            println(s"收到对手离开消息！！！！！")
             if (e.playerId != myId) {
               clearOpId()
               opLeft = true
