@@ -32,4 +32,8 @@ case class Brick(
     BrickState(pId, rId, isNormal, position, color)
   }
 
+  def brickDown(): Unit = {
+    this.position = Point(this.position.x, this.position.y + height)
+  }
+
 }

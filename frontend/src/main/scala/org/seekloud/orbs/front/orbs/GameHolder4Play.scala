@@ -11,6 +11,8 @@ import org.seekloud.orbs.shared.ptcl.model.Point
 import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol
 import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol._
 
+import scala.util.Random
+
 /**
   * User: TangYaruo
   * Date: 2019/2/15
@@ -169,7 +171,9 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
     myCanvas.getCanvas.focus()
     myCanvas.getCanvas.onmousedown = { (e: dom.MouseEvent) =>
       orbsSchemaOpt.foreach { orbsSchema =>
-        val event = MouseClickLeft(myByteId, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
+        val random = new Random()
+        val initDirection = (random.nextFloat() * math.Pi * 0.5 - 3 / 4.0 * math.Pi).toFloat
+        val event = MouseClickLeft(myByteId, initDirection, orbsSchema.systemFrame + preExecuteFrameOffset, getActionSerialNum)
         webSocketClient.sendMsg(event)
         orbsSchema.preExecuteUserEvent(event)
       }

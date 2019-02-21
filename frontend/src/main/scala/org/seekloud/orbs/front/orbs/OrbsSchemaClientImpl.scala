@@ -32,22 +32,38 @@ case class OrbsSchemaClientImpl(
   def drawGame(offSetTime: Long, canvasUnit: Float, canvasBounds: Point): Unit = {
     if (!waitSyncData) {
       plankMap.get(myId) match {
-        case Some(_) =>
-          drawBackground(ctx, canvasUnit, canvasBounds)
-          drawPlank(myId, ctx, canvasUnit, canvasBounds)
-          drawBall(myId, ctx, canvasUnit, canvasBounds)
-          drawBricks(myId, ctx, canvasUnit, canvasBounds)
+        case Some(plank) =>
+          if (episodeWinner.isEmpty) {
+            drawBackground(ctx, canvasUnit, canvasBounds)
+            drawPlank(myId, ctx, canvasUnit, canvasBounds)
+            drawBall(myId, ctx, canvasUnit, canvasBounds)
+            drawBricks(myId, ctx, canvasUnit, canvasBounds)
+          } else {
+            if (episodeWinner.get == plank.pId) { //自己胜利
+              drawPlayerWin(ctx)
+            } else { //自己失败
+              drawPlayerLose(ctx)
+            }
+          }
 
         case None => debug(s"drawGame not find plank: $myId")
       }
       if (opId.nonEmpty) {
         opId.foreach { op =>
           plankMap.get(op) match {
-            case Some(_) =>
-              drawBackground(opCtx, canvasUnit, canvasBounds)
-              drawPlank(op, opCtx, canvasUnit, canvasBounds)
-              drawBall(op, opCtx, canvasUnit, canvasBounds)
-              drawBricks(op, opCtx, canvasUnit, canvasBounds)
+            case Some(plank) =>
+              if (episodeWinner.isEmpty) {
+                drawBackground(opCtx, canvasUnit, canvasBounds)
+                drawPlank(op, opCtx, canvasUnit, canvasBounds)
+                drawBall(op, opCtx, canvasUnit, canvasBounds)
+                drawBricks(op, opCtx, canvasUnit, canvasBounds)
+              } else {
+                if (episodeWinner.get == plank.pId) { //对手胜利
+                  drawOpponentWin(opCtx)
+                } else { //对手失败
+                  drawOpponentLose(opCtx)
+                }
+              }
             case None => debug(s"drawGame not find opponent plank: $op")
           }
         }

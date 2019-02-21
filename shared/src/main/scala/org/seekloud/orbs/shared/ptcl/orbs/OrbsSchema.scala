@@ -39,6 +39,12 @@ trait OrbsSchema {
 
   var needUserMap: Boolean = false
 
+  var episodeWinner: Option[Byte] = None
+
+  var latestBricksDownFrame: Int = 0
+
+  protected val brickDownInterval = 150
+
   /*元素*/
   val ballMap = mutable.HashMap[String, Ball]() //playerId & bId -> Ball
   val plankMap = mutable.HashMap[String, Plank]() //playerId -> Plank
@@ -132,6 +138,7 @@ trait OrbsSchema {
   }
 
   protected final def handleGenerateBrickEvent(e: GenerateBrick): Unit = {
+//    println(s"Generate bricks, frame: $systemFrame")
     e.brick.foreach { b =>
       val brick = new Brick(config, b)
       val playerId = byteId2PlayerId(e.playerId)
@@ -192,6 +199,7 @@ trait OrbsSchema {
         val newBall = new Ball(config, e.newBall)
         ballMap.put(pId + "&" + newBall.bId, newBall)
         quadTree.insert(newBall)
+        plankMap.get(pId).foreach(p => p.ballAvailable = (p.ballAvailable - 1).toByte)
       case Left(_) =>
         debug(s"ball [${e.playerId}] not exist in playerIdMap.")
 
@@ -263,6 +271,51 @@ trait OrbsSchema {
     plankMap.values.foreach(p => p.move(boundary, quadTree))
   }
 
+  /*后台重写，以后台判定为主*/
+  protected def handleEpisodeEndNow(): Unit = {}
+
+  protected final def handlePlayerWinEvent(e: PlayerWin): Unit = {
+    //除去玩家的所有砖块，保留板子和球
+    episodeWinner = Some(e.playerId)
+    brickMap.foreach { brick =>
+      brickMap.remove(brick._1)
+      quadTree.remove(brick._2)
+    }
+  }
+
+  protected final def handlePlayerWinEvent(l: List[PlayerWin]): Unit = {
+    l foreach handlePlayerWinEvent
+  }
+
+  protected final def handlePlayerWinEventNow(): Unit = {
+    gameEventMap.get(systemFrame).foreach { events =>
+      handlePlayerWinEvent(events.filter(_.isInstanceOf[PlayerWin]).map(_.asInstanceOf[PlayerWin]).reverse)
+    }
+  }
+
+//  protected final def handlePlayerLoseEvent(e: PlayerLose): Unit = {
+//
+//  }
+//
+//  protected final def handlePlayerLoseEvent(l: List[PlayerLose]): Unit = {
+//    l foreach handlePlayerLoseEvent
+//  }
+//
+//  protected final def handlePlayerLoseEventNow(): Unit = {
+//    gameEventMap.get(systemFrame).foreach { events =>
+//      handlePlayerLoseEvent(events.filter(_.isInstanceOf[PlayerLose]).map(_.asInstanceOf[PlayerLose]).reverse)
+//    }
+//  }
+
+  protected final def handleBricksDownEventNow(): Unit = {
+    if (systemFrame - latestBricksDownFrame > brickDownInterval) {
+//      println(s"bricks down!!!!!!!!!")
+      brickMap.values.foreach { brick =>
+        brick.brickDown()
+      }
+      latestBricksDownFrame = systemFrame
+    }
+  }
 
   protected final def handleUserActionEvent(actions: List[UserActionEvent]): Unit = {
     /**
@@ -289,7 +342,8 @@ trait OrbsSchema {
                     case _: PlankRightKeyUp =>
                       plank.stopMoving()
                       if (ball.isAttack == 0) ball.stopMoving()
-                    case _: MouseClickLeft => ball.startAttack()
+                    case e: MouseClickLeft =>
+                      ball.startAttack(e.d)
 
                   }
                 case None =>
@@ -363,6 +417,9 @@ trait OrbsSchema {
 
   def update(): Unit = {
     handleUserLeftRoomNow()
+    handlePlayerWinEventNow()
+    handleEpisodeEndNow()
+    handleBricksDownEventNow()
     handlePlankMoveNow()
     handleBallMoveNow()
     handleUserActionEventNow()

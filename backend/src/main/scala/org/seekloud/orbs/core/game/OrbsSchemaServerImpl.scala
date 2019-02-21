@@ -40,6 +40,8 @@ case class OrbsSchemaServerImpl(
 
   private var justJoinUser: List[(String, String, Byte, ActorRef[UserActor.Command])] = Nil // playerId, name, byteId, Actor
 
+  private var latestUserJoinFrame: Int = 0
+
   def joinGame(playerId: String, name: String, byteId: Byte, userActor: ActorRef[UserActor.Command]): Unit = {
     justJoinUser = (playerId, name, byteId, userActor) :: justJoinUser
   }
@@ -103,7 +105,7 @@ case class OrbsSchemaServerImpl(
     //ball 的初始方向为[-pi, 0]之间的随机数，level默认为1
     val random = new Random()
     val plankPosition = Point((boundary.x / 2.0).toFloat, boundary.y - 50)
-    val plankState = PlankState(byteId, 1, plankPosition, 0, 0)
+    val plankState = PlankState(byteId, 1, plankPosition, 0, 0, Constants.life)
     val plank = new Plank(config, plankState)
     plankMap.put(playerId, plank)
     quadTree.insert(plank)
@@ -131,9 +133,9 @@ case class OrbsSchemaServerImpl(
       val envEvent = GenerateBrick(systemFrame + Constants.preExecuteFrameOffset, player._3, bricks)
       addGameEvent(envEvent)
       dispatch(envEvent)
+      latestUserJoinFrame = systemFrame
     }
     justJoinUser = Nil
-
   }
 
 
@@ -160,6 +162,48 @@ case class OrbsSchemaServerImpl(
     } else {
       log.debug(s"playerId ${plank.pId} is missing in playerIdMap.")
     }
+  }
+
+  override protected def handleEpisodeEndNow(): Unit = {
+//    println(s"handleEpisodeEndNow, frame: $systemFrame")
+    // DEBUG 砖块要3帧的时候才生成，用户第1帧加入的，中间2帧无砖块
+    super.handleEpisodeEndNow()
+    if (systemFrame - latestUserJoinFrame > Constants.preExecuteFrameOffset) {
+      plankMap.foreach { plank =>
+        val playerBricks = brickMap.filter(_._1.startsWith(plank._1))
+        //玩家胜利条件检测
+        if (playerBricks.isEmpty) {
+          val event = PlayerWin(plank._2.pId, systemFrame)
+          addGameEvent(event)
+          dispatch(event)
+        } else {
+          val bottomBrickY = playerBricks.values.map(_.getBrickState.position.y).max
+          if (bottomBrickY >= plank._2.getPlankState.position.y - plank._2.getHeight / 2 - 2 * config.getBallRadius) {
+            val winner = playerIdMap.filterNot(_._1 == plank._2.pId).headOption
+            if (winner.nonEmpty) {
+              val event = PlayerWin(winner.get._1, systemFrame)
+              addGameEvent(event)
+              dispatch(event)
+            }
+          }
+        }
+        //玩家失败条件检测
+        //TODO 生命值为0，砖块触底
+        if (plank._2.ballAvailable <= 0) {
+          val winner = playerIdMap.filterNot(_._1 == plank._2.pId).headOption
+          if (winner.nonEmpty) {
+            val event = PlayerWin(winner.get._1, systemFrame)
+            addGameEvent(event)
+            dispatch(event)
+          }
+        }
+
+
+      }
+    }
+
+
+
   }
 
   override def clearEventWhenUpdate(): Unit = {

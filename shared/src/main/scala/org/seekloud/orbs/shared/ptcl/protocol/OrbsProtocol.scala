@@ -89,17 +89,13 @@ object OrbsProtocol {
 
   final case class UserLeftRoom(playerId: String, byteId: Byte, name: String, override val frame: Int = 0) extends UserEvent with WsMsgServer
 
-//  final case class BallAttackBrick(playerId: Byte, bId: Int, rId: Int, override val frame: Int = 0) extends UserEvent with WsMsgServer
-
-//  final case class BallLandPlank(playerId: Byte, bId: Int, override val frame: Int = 0) extends UserEvent with WsMsgServer
-//
-//  final case class BallReachWall(playerId: Byte, bId: Int, override val frame: Int = 0) extends UserEvent with WsMsgServer
-//
-//  final case class BallReachBottom(playerId: Byte, bid: Int, override val frame: Int = 0) extends UserEvent with WsMsgServer
-
   final case class BrickBeAttacked(playerId: Byte, rId: Int, override val frame: Int = 0) extends UserEvent with WsMsgServer
 
   final case class PlankMissBall(playerId: Byte, bId: Int, newBall: BallState, override val frame: Int = 0) extends UserEvent with WsMsgServer
+
+  final case class PlayerWin(playerId: Byte, override val frame: Int) extends UserEvent with WsMsgServer
+
+//  final case class PlayerLose(playerId: Byte, override val frame: Int) extends UserEvent with WsMsgServer
 
   final case class PlankLeftKeyDown(playerId: Byte, override val frame: Int, override val serialNum: Byte) extends UserActionEvent with WsMsgFront with WsMsgServer
 
@@ -109,7 +105,7 @@ object OrbsProtocol {
 
   final case class PlankRightKeyUp(playerId: Byte, override val frame: Int, override val serialNum: Byte) extends UserActionEvent with WsMsgFront with WsMsgServer
 
-  final case class MouseClickLeft(playerId: Byte, override val frame: Int, override val serialNum: Byte) extends UserActionEvent with WsMsgFront with WsMsgServer
+  final case class MouseClickLeft(playerId: Byte, d: Float, override val frame: Int, override val serialNum: Byte) extends UserActionEvent with WsMsgFront with WsMsgServer
 
 
   final case class JoinGameInfo(

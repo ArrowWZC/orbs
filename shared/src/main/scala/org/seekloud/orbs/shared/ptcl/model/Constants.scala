@@ -16,10 +16,11 @@ object Constants {
 
   object GameState {
     val firstCome = 1
-    val play = 2
-    val stop = 3
-    val loadingPlay = 4
-    val relive = 5
+    val wait4Opponent = 2
+    val loadingPlay = 3
+    val play = 4
+    val stop = 5
+    val relive = 6
   }
 
   object Canvas {
@@ -37,6 +38,14 @@ object Constants {
     val waitOpJoin = "等待对手加入..."
     val opponentLeft = "您的对手已离开！"
   }
+
+  //TODO 普及
+  object Boo {
+    val isFalse: Byte = 0
+    val isTrue: Byte = 1
+  }
+
+  val life: Byte = 10 //玩家生命值
 
   val preExecuteFrameOffset = 2 //预执行2帧
 

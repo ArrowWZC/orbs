@@ -15,7 +15,7 @@ import org.seekloud.orbs.shared.ptcl.util.QuadTree
   * 待完成功能：发射子弹
   */
 
-case class PlankState(pId: Byte, level: Byte, position: Point, direction: Float, isMove: Byte)
+case class PlankState(pId: Byte, level: Byte, position: Point, direction: Float, isMove: Byte, ballAvailable: Byte)
 
 case class Plank(
   config: OrbsConfig,
@@ -23,11 +23,12 @@ case class Plank(
   pId: Byte,
   var level: Byte,
   var direction: Float,
-  var isMove: Byte //0:false, 1:true
+  var isMove: Byte, //0:false, 1:true，
+  var ballAvailable: Byte = 10
 ) extends RectangleObjectOfGame {
 
   def this(config: OrbsConfig, plankState: PlankState) = {
-    this(config, plankState.position, plankState.pId, plankState.level, plankState.direction, plankState.isMove)
+    this(config, plankState.position, plankState.pId, plankState.level, plankState.direction, plankState.isMove, plankState.ballAvailable)
   }
 
   override protected val collisionOffset: Float = config.getPlankCW
@@ -35,7 +36,7 @@ case class Plank(
   override protected val height: Float = config.getPlankHeight
 
   def getPlankState: PlankState = {
-    PlankState(pId, level, position, direction, isMove)
+    PlankState(pId, level, position, direction, isMove, ballAvailable)
   }
 
   //0: left，1：right

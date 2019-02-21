@@ -38,32 +38,30 @@ trait BackgroundClient {
   def drawGameLoading(ctx: MiddleContext): Unit = {
     println("linking...")
     drawInfo(ctx, GameInfo.linking)
-//    ctx.setFill("#000000")
-//    ctx.fillRec(0, 0, canvasSize.x, canvasSize.y)
-//    ctx.setFill("rgb(250, 250, 250)")
-//    ctx.setTextAlign("left")
-//    ctx.setFont("Helvetica", 36)
-//    ctx.fillText("请稍等，正在连接服务器", 150, 180)
   }
 
   def drawWaitingOp(ctx: MiddleContext): Unit = {
     drawInfo(ctx, GameInfo.waitOpJoin)
-//    ctx.setFill("#000000")
-//    ctx.fillRec(0, 0, canvasSize.x, canvasSize.y)
-//    ctx.setFill("rgb(250, 250, 250)")
-//    ctx.setTextAlign("left")
-//    ctx.setFont("Helvetica", 20)
-//    ctx.fillText("请稍等，正在为您匹配对手~", 50, 80)
   }
 
   def drawPlayerLeave(ctx: MiddleContext): Unit = {
     drawInfo(ctx, GameInfo.opponentLeft)
-//    ctx.setFill("#000000")
-//    ctx.fillRec(0, 0, canvasSize.x, canvasSize.y)
-//    ctx.setFill("rgb(250, 250, 250)")
-//    ctx.setTextAlign("left")
-//    ctx.setFont("Helvetica", 20)
-//    ctx.fillText("对手已离开", 50, 80)
+  }
+
+  def drawPlayerWin(ctx: MiddleContext): Unit = {
+    drawInfo(ctx, "YOU WIN!!!")
+  }
+
+  def drawPlayerLose(ctx: MiddleContext): Unit = {
+    drawInfo(ctx, "YOU LOSE!!!")
+  }
+
+  def drawOpponentWin(ctx: MiddleContext): Unit = {
+    drawInfo(ctx, "Opponent Win!!!")
+  }
+
+  def drawOpponentLose(ctx: MiddleContext): Unit = {
+    drawInfo(ctx, "Opponent Lose!!!")
   }
 
 
