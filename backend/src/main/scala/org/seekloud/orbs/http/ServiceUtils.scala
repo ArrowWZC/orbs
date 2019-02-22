@@ -12,12 +12,12 @@ import org.seekloud.orbs.shared.ptcl.ErrorRsp
 import org.seekloud.utils.CirceSupport
 import org.seekloud.utils.SecureUtil._
 import org.seekloud.orbs.http.SessionBase.SessionCombine
-
 import org.seekloud.orbs.protocol.CommonErrorCode
 import io.circe.{Decoder, Error}
 import io.circe.parser.decode
 import org.slf4j.LoggerFactory
 import org.seekloud.orbs.Boot.executor
+import org.seekloud.orbs.protocol.CommonProtocol.CommonRsp
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
@@ -39,7 +39,9 @@ trait ServiceUtils extends CirceSupport with SessionBase{
   import ServiceUtils._
   import io.circe.generic.auto._
 
+  final val INTERNAL_ERROR = CommonRsp(10001, "Internal error.")
 
+  final val JsonParseError = CommonRsp(10002, "Json parse error.")
 
   def htmlResponse(html: String): HttpResponse = {
     HttpResponse(entity = HttpEntity(ContentTypes.`text/html(UTF-8)`, html))

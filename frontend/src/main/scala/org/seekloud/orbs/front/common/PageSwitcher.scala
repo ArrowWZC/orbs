@@ -9,7 +9,7 @@ import org.scalajs.dom.raw.Event
   * Date: 4/15/2018
   * Time: 1:46 PM
   */
-trait PageSwitcher{
+trait PageSwitcher {
 
   def getCurrentHash: String = dom.window.location.hash
 
@@ -19,7 +19,7 @@ trait PageSwitcher{
 
 }
 
-object PageSwitcher extends PageSwitcher{
+object PageSwitcher extends PageSwitcher {
   private val currentPageHash: Var[List[String]] = Var(Nil)
 
 
@@ -38,12 +38,12 @@ object PageSwitcher extends PageSwitcher{
   }
 
   override def switchPageByHash(): Unit = {
-    //    println("PageSwitcher.switchPageByHash: " + getCurrentHash)
+    println("PageSwitcher.switchPageByHash: " + getCurrentHash)
     currentPageHash := hashStr2Seq(getCurrentHash).toList
   }
 
   dom.window.onhashchange = { _: Event =>
-    //    println("PageSwitcher.onhashchange: " + getCurrentHash)
+    println("PageSwitcher.onhashchange: " + getCurrentHash)
     switchPageByHash()
   }
 

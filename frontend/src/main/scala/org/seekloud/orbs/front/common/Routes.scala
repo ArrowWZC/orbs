@@ -12,7 +12,13 @@ object Routes {
 
   def wsJoinGameUrl(name:String) = base + s"/game/join?name=$name"
 
+  def wsLoginGameUrl(playerId: String, name: String) = base + s"/game/loginJoin?playerId=$playerId&name=$name"
+
   def imgPath(fileName: String) = base +"/static/img/" + fileName
+
+  val userBase = "/orbs/user"
+  val signUp = userBase + "/signUp"
+  val signIn = userBase + "/signIn"
 
 
 

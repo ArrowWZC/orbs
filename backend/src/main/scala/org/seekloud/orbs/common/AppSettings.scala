@@ -64,6 +64,7 @@ object AppSettings {
 
 
 
+  /*Slick*/
   val slickConfig = config.getConfig("slick.db")
   val slickUrl = slickConfig.getString("url")
   val slickUser = slickConfig.getString("user")

@@ -24,13 +24,13 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
   private val preExecuteFrameOffset = org.seekloud.orbs.shared.ptcl.model.Constants.preExecuteFrameOffset
 
   //游戏启动
-  def start(name: String): Unit = {
+  def start(name: String, playerId: Option[String] = None): Unit = {
     println(s"start $name; firstCome $firstCome")
     myName = name
     myCanvas.getCanvas.focus()
     if (firstCome) {
       addActionListenEvent()
-      val url = Routes.wsJoinGameUrl(name)
+      val url = if (playerId.isEmpty) Routes.wsJoinGameUrl(name) else Routes.wsLoginGameUrl(playerId.get, name)
       webSocketClient.setup(url)
       gameLoop()
     }

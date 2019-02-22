@@ -32,19 +32,33 @@ trait OrbsService extends ServiceUtils
 
   import OrbsService._
 
+  private val normalJoin: Route = path("join") {
+    parameter(
+      'name.as[String]
+    ) { name =>
+      val flowFuture: Future[Flow[Message, Message, Any]] = userManager ? (UserManager.GetWebSocketFlow(name, _))
+      dealFutureResult(
+        flowFuture.map(t => handleWebSocketMessages(t))
+      )
+    }
+  }
+
+  private val loginJoin: Route = path("loginJoin") {
+    parameter(
+      'playerId.as[String],
+      'name.as[String]
+    ) { (playerId, name) =>
+      val flowFuture: Future[Flow[Message, Message, Any]] = userManager ? (UserManager.GetLoginWebSocketFlow(playerId, name, _))
+      dealFutureResult(
+        flowFuture.map(t => handleWebSocketMessages(t))
+      )
+    }
+  }
+
   val orbsRoutes: Route = (pathPrefix("game") & get) {
     pathEndOrSingleSlash {
       getFromResource("html/admin.html")
-    } ~ path("join") {
-      parameter(
-        'name
-      ) { name =>
-        val flowFuture: Future[Flow[Message, Message, Any]] = userManager ? (UserManager.GetWebSocketFlow(name, _))
-        dealFutureResult(
-          flowFuture.map(t => handleWebSocketMessages(t))
-        )
-      }
-    }
+    } ~ normalJoin ~ loginJoin
   }
 
 }

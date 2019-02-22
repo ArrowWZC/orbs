@@ -2,31 +2,27 @@ package org.seekloud.utils
 
 import com.zaxxer.hikari.HikariDataSource
 import org.slf4j.LoggerFactory
-import slick.jdbc.PostgresProfile.api._
-import slick.util.AsyncExecutor
-import org.seekloud.orbs.Boot.executor
+import slick.jdbc.H2Profile
+
 /**
  * User: Taoz
  * Date: 2/9/2015
  * Time: 4:33 PM
  */
 object DBUtil {
+
   val log = LoggerFactory.getLogger(this.getClass)
   private val dataSource = createDataSource()
 
   import org.seekloud.orbs.common.AppSettings._
 
+
   private def createDataSource() = {
 
-    val dataSource = new org.postgresql.ds.PGSimpleDataSource()
-
-    //val dataSource = new MysqlDataSource()
-
-    log.info(s"connect to db: $slickUrl")
-    dataSource.setUrl(slickUrl)
+    val dataSource = new org.h2.jdbcx.JdbcDataSource
+    dataSource.setURL(slickUrl)
     dataSource.setUser(slickUser)
     dataSource.setPassword(slickPassword)
-
     val hikariDS = new HikariDataSource()
     hikariDS.setDataSource(dataSource)
     hikariDS.setMaximumPoolSize(slickMaximumPoolSize)
@@ -37,11 +33,10 @@ object DBUtil {
     hikariDS
   }
 
-  val asyncExecutor : AsyncExecutor = AsyncExecutor.apply("AsyncExecutor.default",30,-1)
+  val driver = H2Profile
 
-  val db = Database.forDataSource(dataSource, Some(slickMaximumPoolSize),asyncExecutor)
+  import driver.api.Database
 
-
-
+  val db: Database = Database.forDataSource(dataSource, Some(slickMaximumPoolSize))
 
 }

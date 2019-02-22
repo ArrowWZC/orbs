@@ -69,6 +69,7 @@ object Dependencies {
   val essf = "org.seekloud" %% "essf" % "0.0.1-beta2"
   val byteobject = "org.seekloud" %% "byteobject" % "0.1.2"
   //  val scalaFx = "org.scalafx" %% "scalafx" % "10.0.2-R15"
+  val h2Database = "com.h2database" % "h2" % "1.4.197"
 
 
 
@@ -93,7 +94,8 @@ object Dependencies {
       Dependencies.asynchttpclient,
       Dependencies.ehcache,
       Dependencies.essf,
-      Dependencies.byteobject
+      Dependencies.byteobject,
+      Dependencies.h2Database
       //      ,
       //      Dependencies.scalaFx
     )

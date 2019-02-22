@@ -15,10 +15,10 @@ import scala.xml.Elem
 /**
   * Created by Jingyi on 2018/11/9
   */
-class OrbsRender(playerName: String) extends Page {
+class OrbsRender(playerName: String, playerId: Option[String] = None) extends Page {
 
-  val pageWidth: Double = dom.window.innerWidth
-  val pageHeight: Double = dom.window.innerHeight
+//  val pageWidth: Double = dom.window.innerWidth
+//  val pageHeight: Double = dom.window.innerHeight
 
   private val myCanvasName = "myView"
   private val opCanvasName = "opView"
@@ -32,14 +32,14 @@ class OrbsRender(playerName: String) extends Page {
     println(s"OrbsRender init...")
 
     val gameHolder = new GameHolder4Play(myCanvasName, opCanvasName)
-    gameHolder.start(playerName)
+    gameHolder.start(playerName, playerId)
   }
 
 
   override def render: Elem = {
     Shortcut.scheduleOnce(() => init(), 0)
     <div style={s"background:url(${Routes.imgPath("pageBack.jpg")});background-size:cover;" +
-                s"width:${pageWidth}px;height:${pageHeight}px"}>
+                s"width:${MainPage.pageWidth}px;height:${MainPage.pageHeight}px"}>
       {canvas}
       {opCanvas}
     </div>
