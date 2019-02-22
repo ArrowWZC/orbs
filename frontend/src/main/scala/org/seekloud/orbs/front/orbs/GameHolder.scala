@@ -140,7 +140,7 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
           }
         }
         logicFrameTime = System.currentTimeMillis()
-        ping()
+//        ping()
 
       case GameState.stop =>
       //TODO

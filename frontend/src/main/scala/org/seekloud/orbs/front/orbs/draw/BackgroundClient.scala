@@ -15,6 +15,8 @@ trait BackgroundClient {
   this: OrbsSchemaClientImpl =>
 
   val backgroundImg = drawFrame.createImage(Routes.imgPath("test.jpg"))
+  val lifeImg = drawFrame.createImage(Routes.imgPath("life.png"))
+  val brickImg = drawFrame.createImage(Routes.imgPath("brick.png"))
 
   def drawBackground(ctx: MiddleContext, canvasUnit: Float, canvasBounds: Point): Unit = {
 //    ctx.save()
@@ -24,6 +26,24 @@ trait BackgroundClient {
     ctx.setFill("#000000")
     ctx.fillRec(0, 0, canvasSize.x, canvasSize.y)
     ctx.restore()
+  }
+
+  //TODO 画名字，生命，剩余砖块数目
+  def drawPlayerInfo(id: String, name: String, ctx: MiddleContext, canvasUnit: Float, canvasBounds: Point): Unit = {
+    plankMap.get(id).foreach { plank =>
+      val life = plank.ballAvailable
+      val brickLeft = brickMap.count(_._1.startsWith(id))
+      ctx.save()
+      ctx.setFill("rgb(250, 250, 250)")
+      ctx.setTextAlign("left")
+      ctx.setFont("Helvetica", 18)
+      ctx.fillText(s"name: $name", 20, 31)
+      ctx.drawImage(lifeImg, 220, 20, Some(21, 13))
+      ctx.fillText(life.toString, 246, 31)
+      ctx.drawImage(brickImg, 275, 17, Some(18, 18))
+      ctx.fillText(brickLeft.toString, 298, 31)
+      ctx.restore()
+    }
   }
 
   def drawInfo(ctx: MiddleContext, info: String): Unit = {
