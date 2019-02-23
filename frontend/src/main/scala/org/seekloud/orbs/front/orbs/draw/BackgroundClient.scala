@@ -101,6 +101,9 @@ trait BackgroundClient {
     drawInfo(ctx, "对方已准备好再来一局~")
   }
 
+  def drawOpGone(ctx: MiddleContext): Unit = {
+    drawInfo(ctx, "你把对手吓跑啦！重新匹配...")
+  }
 
 
 

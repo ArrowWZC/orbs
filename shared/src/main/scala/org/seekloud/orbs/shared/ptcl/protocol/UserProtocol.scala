@@ -41,6 +41,8 @@ object UserProtocol {
 
   val PasswordError = SignInRsp(errCode = 100004, msg = "密码错误！")
 
+  val UserExist = SignInRsp(errCode = 100005, msg = "该用户已在游戏中！")
+
 
 
 }

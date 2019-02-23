@@ -83,6 +83,7 @@ object RoomActor {
         case LeftRoom(playerId, name, userList) =>
           log.debug(s"$name left room ${System.currentTimeMillis()}")
           orbsSchema.leftGame(playerId, name)
+          orbsSchema.episodeWinner = None
           subscribersMap.remove(playerId)
 
           orbsSchema.playerIdMap.foreach { p =>

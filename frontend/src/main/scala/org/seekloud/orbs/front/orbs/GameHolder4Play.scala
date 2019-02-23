@@ -52,6 +52,11 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
     if (playerId == myId) {
       myByteId = byteId
     } else {
+      if (opLeft) {
+        opLeft = false
+        orbsSchemaOpt.foreach(_.opLeft = false)
+        gameState = GameState.play
+      }
       opId = Some(playerId)
       opName = Some(name)
       if (gameState != GameState.stop) opByteId = Some(byteId) //opByteId用来判断对手是否重启
@@ -163,14 +168,16 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
 
             }
           case e: UserLeftRoom =>
-            if (e.playerId != myId) {
-              clearOpId()
-              opLeft = true
-            }
             orbsSchemaOpt.foreach{
               orbsSchema =>
                 orbsSchema.playerIdMap.remove(e.byteId)
-                orbsSchema.opLeft = true
+                if (e.playerId != myId) {
+                  clearOpId()
+                  opLeft = true
+                  orbsSchema.opLeft = true
+                  orbsSchema.episodeWinner = None
+                  gameState = GameState.stop
+                }
             }
 
           case e: PlayerWin =>

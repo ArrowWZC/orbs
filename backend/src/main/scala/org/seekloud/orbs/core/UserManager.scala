@@ -11,7 +11,7 @@ import akka.util.ByteString
 import org.seekloud.orbs.models.dao.UserInfoDao
 import org.seekloud.orbs.Boot.executor
 import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol.{UserInfo, Wrap, WsMsgFront, WsMsgServer}
-import org.seekloud.orbs.shared.ptcl.protocol.UserProtocol.{NicknameError, NicknameInvalid, PasswordError, SignInRsp, SignUpFail, SignUpRsp}
+import org.seekloud.orbs.shared.ptcl.protocol.UserProtocol.{NicknameError, NicknameInvalid, PasswordError, UserExist, SignInRsp, SignUpFail, SignUpRsp}
 import org.slf4j.LoggerFactory
 
 import scala.collection.mutable
@@ -122,7 +122,12 @@ object UserManager {
           userMap.find(_.nickname == msg.nickname) match {
             case Some(user) =>
               if (msg.password == user.password) {
-                msg.replyTo ! SignInRsp(Some(user.playerId))
+                if (getUserActorOpt(ctx, user.playerId).nonEmpty) {
+                  msg.replyTo ! UserExist
+                } else {
+                  msg.replyTo ! SignInRsp(Some(user.playerId))
+
+                }
               } else {
                 msg.replyTo ! PasswordError
               }
@@ -235,6 +240,11 @@ object UserManager {
       ctx.watchWith(userActor, ChildDead(childName, userActor))
       userActor
     }.upcast[UserActor.Command]
+  }
+
+  private def getUserActorOpt(ctx: ActorContext[Command], id: String): Option[ActorRef[UserActor.Command]] = {
+    val childName = s"UserActor-$id"
+    ctx.child(childName).map(_.upcast[UserActor.Command])
   }
 
 

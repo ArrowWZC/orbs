@@ -37,7 +37,7 @@ object Constants {
   object GameInfo {
     val linking = "请稍等，正在连接服务器..."
     val waitOpJoin = "等待对手加入..."
-    val opNotIn = "暂时无人加入。。。"
+    val opNotIn = "暂时无人加入..."
     val opponentLeft = "您的对手已离开！"
   }
 

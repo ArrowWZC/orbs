@@ -43,6 +43,8 @@ case class OrbsSchemaServerImpl(
 
   private var latestUserJoinFrame: Int = 0
 
+  private var lastEpisodeEndFrame: Int = 0
+
   def joinGame(playerId: String, name: String, byteId: Byte, userActor: ActorRef[UserActor.Command]): Unit = {
     justJoinUser = (playerId, name, byteId, userActor) :: justJoinUser
   }
@@ -127,6 +129,7 @@ case class OrbsSchemaServerImpl(
       playerIdMap.put(player._3, (player._1, player._2))
       //再生成玩家元素, 发送UserEnterRoom事件给前端
       //再生成环境元素，发送GenerateBrick事件给前端
+      println(s"handle ${player._1} enter room.")
       val (plankState, ballState) = generatePlayerElem(player._3, player._1)
       player._4 ! UserActor.JoinRoomSuccess(player._1, player._3, roomActorRef, config.getOrbsConfigImpl, playerIdMap.toList)
       val playerEvent = UserEnterRoom(player._1, player._3, player._2, plankState, ballState, systemFrame + Constants.preExecuteFrameOffset)
@@ -169,13 +172,14 @@ case class OrbsSchemaServerImpl(
 
   override protected def handleBricksDownEventNow(): Unit = {
     super.handleBricksDownEventNow()
-    if (systemFrame - latestBricksDownFrame > brickDownInterval && systemFrame - latestUserJoinFrame > Constants.preExecuteFrameOffset) {
+    if (systemFrame - latestBricksDownFrame > brickDownInterval && systemFrame - latestUserJoinFrame > brickDownInterval * 2) {
       if (plankMap.size == AppSettings.personLimit) {
         brickMap.values.foreach { brick =>
           brick.brickDown()
+//          println(s"player ${brick.pId} brick down")
+          val data = getOrbsSchemaState
+          dispatch(SchemaSyncState(data))
         }
-        val data = getOrbsSchemaState
-        dispatch(SchemaSyncState(data))
         latestBricksDownFrame = systemFrame
       }
     }
@@ -241,39 +245,47 @@ case class OrbsSchemaServerImpl(
         }
       }
 
-      if (brickWinner.nonEmpty) {
-//        println(s"byteId ${brickWinner.get.pId} 砖块消光")
-        val event = PlayerWin(brickWinner.get.pId, systemFrame + Constants.preExecuteFrameOffset)
-        addGameEvent(event)
-        dispatch(event)
-      } else if (downLoser.nonEmpty) {
-//        println(s"byteId ${brickWinner.get.pId} 砖块触底")
+      if (systemFrame - lastEpisodeEndFrame > Constants.preExecuteFrameOffset) {
+        if (brickWinner.nonEmpty) {
+          println(s"byteId ${brickWinner.get.pId} 砖块消光")
+          val event = PlayerWin(brickWinner.get.pId, systemFrame + Constants.preExecuteFrameOffset)
+          addGameEvent(event)
+          dispatch(event)
+        } else if (downLoser.nonEmpty) {
+          println(s"byteId ${brickWinner.get.pId} 砖块触底")
 
-        val winner = playerIdMap.filterNot(_._1 == downLoser.get.pId).headOption
-        if (winner.nonEmpty) {
-          val event = PlayerWin(winner.get._1, systemFrame + Constants.preExecuteFrameOffset)
+          val winner = playerIdMap.filterNot(_._1 == downLoser.get.pId).headOption
+          if (winner.nonEmpty) {
+            val event = PlayerWin(winner.get._1, systemFrame + Constants.preExecuteFrameOffset)
+            addGameEvent(event)
+            dispatch(event)
+          }
+        } else if (lifeLoser.nonEmpty) {
+          println(s"byteId ${lifeLoser.get.pId} 没命")
+
+          val winner = playerIdMap.filterNot(_._1 == lifeLoser.get.pId).headOption
+//          println(s"winner: $winner")
+//          playerIdMap.foreach(a => s"player: $a")
+          if (winner.nonEmpty) {
+            val event = PlayerWin(winner.get._1, systemFrame + Constants.preExecuteFrameOffset)
+            addGameEvent(event)
+            dispatch(event)
+          } else {
+            println(s"找不到胜利玩家")
+          }
+        } else if (isEqual) {
+          val event = PlayerWin(-1, systemFrame + Constants.preExecuteFrameOffset)
           addGameEvent(event)
           dispatch(event)
         }
-      } else if (lifeLoser.nonEmpty) {
-//        println(s"byteId ${lifeLoser.get.pId} 没命")
-
-        val winner = playerIdMap.filterNot(_._1 == lifeLoser.get.pId).headOption
-        if (winner.nonEmpty) {
-          val event = PlayerWin(winner.get._1, systemFrame + Constants.preExecuteFrameOffset)
-          addGameEvent(event)
-          dispatch(event)
-        }
-      } else if (isEqual) {
-        val event = PlayerWin(-1, systemFrame + Constants.preExecuteFrameOffset)
-        addGameEvent(event)
-        dispatch(event)
+        lastEpisodeEndFrame = systemFrame
       }
 
     }
   }
 
   override protected def restartCallBack(playerId: Byte): Unit = {
+    log.info(s"player-$playerId Restart...")
     super.restartCallBack(playerId)
 //    println(s"restartCallBack-$playerId")
     //    val bricks = generateBricks(playerId)
@@ -285,6 +297,7 @@ case class OrbsSchemaServerImpl(
   override protected def episodeEndInit(): Unit = {
     super.episodeEndInit()
     plankMap.foreach { player =>
+//      println(s"episodeEndInit-${player._1}")
       plankMap.get(player._1).foreach { p =>
         plankMap.remove(player._1)
         quadTree.remove(p)

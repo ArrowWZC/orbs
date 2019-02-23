@@ -115,6 +115,7 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
 
   protected def gameLoop(): Unit = {
     //    handleResize()
+//    println(s"gameState: $gameState")
     logicFrameTime = System.currentTimeMillis()
     gameState match {
       case GameState.firstCome =>

@@ -88,9 +88,12 @@ trait OrbsSchema {
   }
 
   protected final def handleUserEnterRoomEvent(e: UserEnterRoom): Unit = {
-    plankMap.get(e.playerId).foreach { p =>
-      plankMap.remove(e.playerId)
-      quadTree.remove(p)
+    plankMap.get(e.playerId) match {
+      case Some(p) =>
+        plankMap.remove(e.playerId)
+        quadTree.remove(p)
+      case None =>
+        episodeWinner = None
     }
     ballMap.filter(_._1.startsWith(e.playerId)).foreach { b =>
       ballMap.remove(b._1)
@@ -118,6 +121,9 @@ trait OrbsSchema {
   }
 
   protected final def handleUserLeftRoomEvent(e: UserLeftRoom): Unit = {
+    playerIdMap.remove(e.byteId)
+//    val winner = plankMap.find(_._1 != e.playerId)
+//    episodeWinner = None
     plankMap.filter(_._1 == e.playerId).foreach{ p =>
       plankMap.remove(p._1)
       quadTree.remove(p._2)
@@ -213,7 +219,9 @@ trait OrbsSchema {
         val newBall = new Ball(config, e.newBall)
         ballMap.put(pId + "&" + newBall.bId, newBall)
         quadTree.insert(newBall)
-        plankMap.get(pId).foreach(p => p.ballAvailable = (p.ballAvailable - 1).toByte)
+        plankMap.get(pId).foreach { p =>
+          p.ballAvailable = (p.ballAvailable - 1).toByte
+        }
       case Left(_) =>
         debug(s"ball [${e.playerId}] not exist in playerIdMap.")
 
@@ -256,6 +264,9 @@ trait OrbsSchema {
             if (ball._2.isMissed == 1) {
               val plank = plankMap.get(ball._1.split("&").head)
               plank.foreach(plankMissBallCallBack(ball._2))
+              plankMap.get(ball._1.split("&").head).foreach { p =>
+                p.isMove == 0
+              }
             }
             val objects = quadTree.retrieveFilter(ball._2)
             objects.filter(_.isInstanceOf[Plank]).map(_.asInstanceOf[Plank]).filter(_.pId == ballByteId)
@@ -290,9 +301,12 @@ trait OrbsSchema {
 
   protected final def handlePlayerWinEvent(e: PlayerWin): Unit = {
     //除去玩家的所有砖块，保留板子和球
-//    println(s"handle ${e.playerId} win!!!")
-    episodeWinner = Some(e.playerId)
-    episodeEndInit()
+    println(s"handle ${e.playerId} win!!!")
+    if (episodeWinner.isEmpty && playerIdMap.exists(_._1 == e.playerId)) {
+//      println(s"handlePlayerWinEvent")
+      episodeWinner = Some(e.playerId)
+      episodeEndInit()
+    }
   }
 
   protected final def handlePlayerWinEvent(l: List[PlayerWin]): Unit = {

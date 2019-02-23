@@ -32,15 +32,19 @@ case class OrbsSchemaClientImpl(
 
   def drawGame(offSetTime: Long, canvasUnit: Float, canvasBounds: Point): Unit = {
     if (!waitSyncData) {
-      //      println(s"episode winner: $episodeWinner")
+//      println(s"episode winner: $episodeWinner")
       plankMap.get(myId) match {
         case Some(plank) =>
           if (episodeWinner.isEmpty) {
-            drawBackground(ctx, canvasUnit, canvasBounds)
-            drawPlayerInfo(myId, myName, ctx, canvasUnit, canvasBounds)
-            drawPlank(myId, ctx, canvasUnit, canvasBounds)
-            drawBall(myId, ctx, canvasUnit, canvasBounds)
-            drawBricks(myId, ctx, canvasUnit, canvasBounds)
+            if (!opLeft) {
+              drawBackground(ctx, canvasUnit, canvasBounds)
+              drawPlayerInfo(myId, myName, ctx, canvasUnit, canvasBounds)
+              drawPlank(myId, ctx, canvasUnit, canvasBounds)
+              drawBall(myId, ctx, canvasUnit, canvasBounds)
+              drawBricks(myId, ctx, canvasUnit, canvasBounds)
+            } else {
+              drawOpGone(ctx)
+            }
           } else {
             if (episodeWinner.get == plank.pId) { //自己胜利
               drawPlayerWin(ctx)
