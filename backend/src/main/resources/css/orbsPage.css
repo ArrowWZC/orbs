@@ -33,3 +33,23 @@
     width: 35px;
     cursor: pointer;
 }
+
+.gameInstrument {
+    /*width: 300px;*/
+    /*height: 300px;*/
+    float: right;
+    /*padding-top: 300px;*/
+    background-size:cover;
+    position: relative;
+    top: 250px;
+    right: 50px;
+}
+
+
+.gameInstrument .text {
+    color: white;
+    position: relative;
+    left: 44px;
+    top: 45px;
+    font-size: 1em;
+}

@@ -101,9 +101,29 @@ class OrbsRender(playerName: String, playerId: Option[String] = None) extends Pa
 
   }
 
+  private val gameInstrument =
+    <div class="gameInstrument" style={s"background:url(${Routes.imgPath("gi.png")});" +
+                                       s"background-size:cover;" +
+                                       s"width:300px;" +
+                                       s"height:246px"}>
+      <p id="ins" class="text">
+        游戏说明:<br/>
+        点击鼠标左键发球；<br/>
+        键盘控制接球版移动；<br/>
+        首先打完砖块者胜利；<br/>
+        用光生命直接死亡；<br/>
+        砖块下落到地步直接死亡<br/>
+      </p>
+    </div>
+
   def init(): Unit = {
     println(s"OrbsRender init...")
-
+//    dom.document.getElementById("ins").innerHTML = "游戏说明:\n" +
+//                                                   "点击鼠标左键发球；\n" +
+//                                                   "键盘控制接球版移动；\n" +
+//                                                   "首先打完砖块者胜利；\n" +
+//                                                   "用光生命直接死亡\n" +
+//                                                   "砖块下落到地步直接死亡"
     val gameHolder = new GameHolder4Play(myCanvasName, opCanvasName)
     gameHolder.start(playerName, playerId)
     gameHolder4Play = Some(gameHolder)
@@ -117,6 +137,7 @@ class OrbsRender(playerName: String, playerId: Option[String] = None) extends Pa
       {topArea}
       {canvas}
       {opCanvas}
+      {gameInstrument}
     </div>
   }
 

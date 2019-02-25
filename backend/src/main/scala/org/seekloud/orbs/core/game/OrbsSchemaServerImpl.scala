@@ -172,7 +172,7 @@ case class OrbsSchemaServerImpl(
 
   override protected def handleBricksDownEventNow(): Unit = {
     super.handleBricksDownEventNow()
-    if (systemFrame - latestBricksDownFrame > brickDownInterval && systemFrame - latestUserJoinFrame > brickDownInterval * 2) {
+    if (systemFrame - latestBricksDownFrame > brickDownInterval) {
       if (plankMap.size == AppSettings.personLimit) {
         brickMap.values.foreach { brick =>
           brick.brickDown()
@@ -252,7 +252,7 @@ case class OrbsSchemaServerImpl(
           addGameEvent(event)
           dispatch(event)
         } else if (downLoser.nonEmpty) {
-          println(s"byteId ${brickWinner.get.pId} 砖块触底")
+          println(s"byteId ${downLoser.get.pId} 砖块触底")
 
           val winner = playerIdMap.filterNot(_._1 == downLoser.get.pId).headOption
           if (winner.nonEmpty) {

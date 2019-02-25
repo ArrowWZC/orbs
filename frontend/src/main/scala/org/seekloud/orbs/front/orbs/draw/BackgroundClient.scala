@@ -73,28 +73,28 @@ trait BackgroundClient {
   }
 
   def drawPlayerWin(ctx: MiddleContext): Unit = {
-    drawInfo(ctx, "YOU WIN!!!")
+    drawInfo(ctx, "你赢了！")
   }
 
   def drawPlayerLose(ctx: MiddleContext): Unit = {
-    drawInfo(ctx, "YOU LOSE!!!")
+    drawInfo(ctx, "你输了！")
   }
 
   def drawOpponentWin(ctx: MiddleContext): Unit = {
-    drawInfo(ctx, "Opponent Win!!!")
+    drawInfo(ctx, "对手赢了！")
   }
 
   def drawOpponentLose(ctx: MiddleContext): Unit = {
-    drawInfo(ctx, "Opponent Lose!!!")
+    drawInfo(ctx, "对手输了！")
   }
 
   def drawEqual(ctx: MiddleContext): Unit = {
-    drawInfo(ctx, "平局！！！")
+    drawInfo(ctx, "平局！")
   }
 
 
   def drawWait4Relive(ctx: MiddleContext): Unit = {
-    drawInfo(ctx, "press space to restart!")
+    drawInfo(ctx, "按空格重启")
   }
 
   def drawOpRestart(ctx: MiddleContext): Unit = {
