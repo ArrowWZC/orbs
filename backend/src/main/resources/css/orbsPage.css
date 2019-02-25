@@ -1,4 +1,35 @@
-.canvas {
-    margin-top: 25px;
+.canvas1 {
+    margin-top: 10px;
+    margin-left: 48px;
+}
+
+.canvas2 {
+    margin-top: 10px;
     margin-left: 30px;
+}
+
+.topArea {
+    padding-top: 15px;
+    margin-left: 48px;
+
+}
+
+.interact {
+    width: 350px;
+    display: inline;
+
+}
+
+.emoji {
+    background-color: whitesmoke;
+    width: 350px;
+    margin-left: 30px;
+    float: left;
+    display: inline;
+
+}
+
+.emoji .detail {
+    width: 35px;
+    cursor: pointer;
 }

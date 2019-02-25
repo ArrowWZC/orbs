@@ -172,6 +172,8 @@ object UserActor {
 
 //            case Some(RestartGame) =>
 //              roomManager ! RoomManager.ReStartJoinRoom(userInfo.playerId, userInfo.name, ctx.self)
+            case Some(event:ToOpInfo) =>
+              roomActor ! RoomActor.ToOpInfoReq(event)
 
             case Some(UserMapReq) =>
               roomActor ! RoomActor.UserMap(ctx.self)

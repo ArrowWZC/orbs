@@ -49,10 +49,13 @@ object SignInPage extends Page {
         </div>
         <button class="ai-road-account-btn" onclick={() =>
           signIn()
-          ()}>登录</button>
+          ()}>登录
+        </button>
         <button class="ai-road-account-btn" onclick={() =>
           signUp()
-          ()}>注册</button>
+          ()}>注册
+        </button>
+        <p font-size="2em"><a href="#/entry">匿名玩 >></a></p>
       </div>
     </div>
 
@@ -60,6 +63,17 @@ object SignInPage extends Page {
     <div class="ai-road-account-footer">
       Arrow版权所有
     </div>
+
+  val showGame = Var(0)
+  val show: Rx[Elem] = showGame.map{
+    case 0 =>
+      userForm
+
+    case 1 =>
+      val pName = dom.window.localStorage.getItem("username")
+      val pId= dom.window.localStorage.getItem("player_id")
+      new OrbsRender(pName, Some(pId)).render
+  }
 
   private val userForm =
     <div class="ai-road-account">
@@ -112,17 +126,6 @@ object SignInPage extends Page {
     } else {
       JsFunc.alert("输入不能为空!")
     }
-  }
-
-  val showGame = Var(0)
-  val show: Rx[Elem] = showGame.map{
-    case 0 =>
-      userForm
-
-    case 1 =>
-      val pName = dom.window.localStorage.getItem("username")
-      val pId= dom.window.localStorage.getItem("player_id")
-      new OrbsRender(pName, Some(pId)).render
   }
 
 

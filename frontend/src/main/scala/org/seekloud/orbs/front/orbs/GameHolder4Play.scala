@@ -42,6 +42,11 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
     }
   }
 
+  def sendInfo(info: String): Unit = {
+    val event = ToOpInfo(myByteId, info)
+    webSocketClient.sendMsg(event)
+  }
+
 //  def reStart(): Unit = {
 //    webSocketClient.sendMsg(RestartGame())
 //  }
@@ -199,6 +204,10 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
         } else {
           dom.window.setTimeout(() => orbsSchemaOpt.foreach(_.receiveGameEvent(msg)), 100)
         }
+
+      case event: ToOpInfo =>
+        barrage = Some((event.sender, event.info))
+        barrageTime = 150
 
       case x => dom.window.console.log(s"接收到无效消息$x")
 

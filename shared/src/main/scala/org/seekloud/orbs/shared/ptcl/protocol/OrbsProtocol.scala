@@ -61,6 +61,8 @@ object OrbsProtocol {
 
   final case class UserMap(playerIdMap: List[(Byte, (String, String))] = Nil) extends WsMsgServer
 
+  final case class ToOpInfo(sender: Byte, info: String) extends WsMsgFront with WsMsgServer
+
   //生成环境元素
   final case class GenerateBrick(override val frame: Int, playerId: Byte, brick: List[BrickState], isRestart: Option[Byte] = None) extends EnvironmentEvent with WsMsgServer
 

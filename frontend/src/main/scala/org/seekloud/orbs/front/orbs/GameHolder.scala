@@ -56,6 +56,10 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
   protected var nextFrame = 0
   protected var logicFrameTime: Long = System.currentTimeMillis()
 
+  /*弹幕*/
+  protected var barrage: Option[(Byte, String)] = None //(sender, info)
+  protected var barrageTime = 0
+
   def gameRender(): Double => Unit = { d =>
     val curTime = System.currentTimeMillis()
     val offsetTime = curTime - logicFrameTime
@@ -162,6 +166,10 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
       if (orbsSchema.plankMap.contains(myId)) {
         if (gameState != GameState.wait4Opponent && gameState != GameState.wait4Relive) {
           orbsSchema.drawGame(offsetTime, canvasUnit, canvasBounds)
+          if (barrage.nonEmpty && barrageTime > 0) {
+            orbsSchema.drawBarrage(barrage.get._1, barrage.get._2)
+            barrageTime -= 1
+          }
         }
       } else {
         if (gameState != GameState.wait4Opponent) {

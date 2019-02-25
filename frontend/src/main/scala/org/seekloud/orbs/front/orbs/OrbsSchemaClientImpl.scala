@@ -1,8 +1,9 @@
 package org.seekloud.orbs.front.orbs
 
+import org.seekloud.orbs.front.common.Routes
 import org.seekloud.orbs.front.orbs.draw.{BackgroundClient, GameElemClient}
 import org.seekloud.orbs.shared.ptcl.config.OrbsConfig
-import org.seekloud.orbs.shared.ptcl.model.Point
+import org.seekloud.orbs.shared.ptcl.model.{Constants, Point}
 import org.seekloud.orbs.shared.ptcl.orbs.OrbsSchemaImpl
 import org.seekloud.orbs.shared.ptcl.util.middleware._
 
@@ -30,9 +31,81 @@ case class OrbsSchemaClientImpl(
   with BackgroundClient
   with GameElemClient {
 
+  def emoji(name: String): MiddleImage = drawFrame.createImage(Routes.imgPath(name))
+
+  def replaceListItem(list: List[String], oldItem: String, newItem: List[String]): List[String] = {
+    var tmpList = List[String]()
+    list.foreach {
+      case `oldItem` => newItem.reverse.foreach(i => tmpList = i :: tmpList)
+      case x => tmpList = x :: tmpList
+    }
+    tmpList.reverse
+  }
+
+  def drawPlayerBarrage(ctx: MiddleContext, info: String): Unit = {
+    var elem = List[String](info)
+    var startPosition = 50
+    def classify(info: String, key: String): Unit = {
+      var newInfo = List[String]()
+      val es = info.split(key)
+      if (info.forall(_ == key.head)) {
+        (1 to info.length).foreach( _ => newInfo = key :: newInfo)
+      } else {
+        if (es.nonEmpty) {
+          es.foreach { e =>
+            if (e != es.last) {
+              newInfo = key :: e :: newInfo
+            } else {
+              newInfo = e :: newInfo
+            }
+          }
+          if (info.endsWith(key)) {
+            (1 to info.split(es.last).last.length / 6).foreach { _ => newInfo = key :: newInfo}
+          }
+        } else {
+          (1 to info.length / 6) foreach(_ => newInfo = key :: newInfo)
+        }
+        newInfo = newInfo.filterNot(_.isEmpty)
+      }
+      elem = replaceListItem(elem, info, newInfo)
+    }
+
+    Constants.emoji.keySet.foreach { key =>
+      elem.foreach { i =>
+        if (i.contains(key) && i != key) {
+          classify(i, key)
+        }
+      }
+    }
+    ctx.save()
+    elem.filterNot(_.isEmpty).foreach { e =>
+      if (Constants.emoji.keySet.contains(e)) {
+        ctx.drawImage(emoji(Constants.emoji(e)), startPosition, 40, Some(25, 25))
+        startPosition += 35
+      } else {
+        ctx.setFill("rgb(250, 250, 250)")
+        ctx.setTextAlign("left")
+        ctx.setFont("Helvetica", 20)
+        ctx.fillText(e, startPosition, 65)
+        startPosition += e.length * 20 + 10
+      }
+    }
+    ctx.restore()
+  }
+
+  def drawBarrage(sender: Byte, info: String): Unit = {
+    playerIdMap.get(sender).foreach { player =>
+      if (player._1 == myId) {
+        drawPlayerBarrage(opCtx, info)
+      } else {
+        drawPlayerBarrage(ctx, info)
+      }
+    }
+  }
+
   def drawGame(offSetTime: Long, canvasUnit: Float, canvasBounds: Point): Unit = {
     if (!waitSyncData) {
-//      println(s"episode winner: $episodeWinner")
+      //      println(s"episode winner: $episodeWinner")
       plankMap.get(myId) match {
         case Some(plank) =>
           if (episodeWinner.isEmpty) {

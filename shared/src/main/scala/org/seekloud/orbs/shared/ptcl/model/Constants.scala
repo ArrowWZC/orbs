@@ -47,6 +47,18 @@ object Constants {
     val isTrue: Byte = 1
   }
 
+  val emoji = mutable.SortedMap (
+    "/u0001" -> "flower.png",
+    "/u0002" -> "egg.png",
+    "/u0003" -> "shit.png",
+    "/u0004" -> "coffee.png",
+    "/u0005" -> "good.png",
+    "/u0006" -> "face1.png",
+    "/u0007" -> "face2.png",
+    "/u0008" -> "face3.png"
+
+  )
+
   val life: Byte = 5 //玩家生命值
 
   val preExecuteFrameOffset = 2 //预执行2帧

@@ -37,6 +37,8 @@ object RoomActor {
 
   case class UserMap(userActor: ActorRef[UserActor.Command]) extends Command
 
+  case class ToOpInfoReq(msg: ToOpInfo) extends Command
+
   case object GameLoop extends Command
 
   private final case object GameLoopKey
@@ -99,6 +101,10 @@ object RoomActor {
         case UserMap(userActor) =>
 
           userActor ! UserActor.DispatchMap(orbsSchema.playerIdMap.toList)
+          Behaviors.same
+
+        case msg: ToOpInfoReq =>
+          dispatch(subscribersMap)(msg.msg)
           Behaviors.same
 
         case WsMessage(userId, msg) =>
