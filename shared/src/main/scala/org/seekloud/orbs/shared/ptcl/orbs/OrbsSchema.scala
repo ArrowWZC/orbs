@@ -2,12 +2,13 @@ package org.seekloud.orbs.shared.ptcl.orbs
 
 import org.seekloud.orbs.shared.ptcl.component._
 import org.seekloud.orbs.shared.ptcl.config.OrbsConfig
-import org.seekloud.orbs.shared.ptcl.model.Constants.{reflector, catchBallBuffer, life}
+import org.seekloud.orbs.shared.ptcl.model.Constants.{catchBallBuffer, life, reflector}
 import org.seekloud.orbs.shared.ptcl.model.{Point, Rectangle}
 import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol._
 import org.seekloud.orbs.shared.ptcl.util.QuadTree
 
 import scala.collection.mutable
+import scala.util.Random
 
 
 /**
@@ -188,8 +189,29 @@ trait OrbsSchema {
     playerId match {
       case Right(pId) =>
         val brick = brickMap.filter(b => b._1.split("&").head == pId && b._2.rId == e.rId).values.headOption
+
         brickMap.remove(pId + "&" + e.rId)
-        brick.foreach(quadTree.remove)
+        brick.foreach { b =>
+          quadTree.remove(b)
+          if (b.isNormal % 2 == 0 && b.isNormal < 10) {
+            println(s"$pId 使用道具 ${b.isNormal}, time: ${System.currentTimeMillis()}")
+            b.isNormal match {
+              case 2 => //板子变长
+                plankMap.get(pId).foreach(_.levelUp())
+              //              case 1 => //对手变短
+              //                plankMap.filterNot(_._1 == pId).foreach(_._2.levelDown())
+              case 4 => //自己变短
+                plankMap.get(pId).foreach(_.levelUp())
+              //              case 3 => //对手变长
+              //                plankMap.filterNot(_._1 == pId).foreach(_._2.levelDown())
+              case 6 => //球加速
+                ballMap.filter(_._1.startsWith(pId)).foreach(_._2.levelUp())
+              case 8 => //球减速
+                ballMap.filter(_._1.startsWith(pId)).foreach(_._2.levelDown())
+              case _ => // do nothing
+            }
+          }
+        }
       case Left(_) =>
         debug(s"brick [${e.playerId}] not exist in playerIdMap.")
 
@@ -301,7 +323,7 @@ trait OrbsSchema {
 
   protected final def handlePlayerWinEvent(e: PlayerWin): Unit = {
     //除去玩家的所有砖块，保留板子和球
-    println(s"handle ${e.playerId} win!!!")
+//    println(s"handle ${e.playerId} win!!!")
     if (episodeWinner.isEmpty && playerIdMap.exists(_._1 == e.playerId)) {
 //      println(s"handlePlayerWinEvent")
       episodeWinner = Some(e.playerId)

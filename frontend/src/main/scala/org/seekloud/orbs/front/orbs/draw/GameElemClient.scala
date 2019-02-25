@@ -16,6 +16,7 @@ import scala.util.Random
 trait GameElemClient {
   this: OrbsSchemaClientImpl =>
   val ballImg = drawFrame.createImage(Routes.imgPath("ball.png"))
+  val tool = drawFrame.createImage(Routes.imgPath("tool.png"))
 
 
   def drawArcRect(ctx: MiddleContext, r: Double, width: Double, height: Double, left: Double, top: Double): Unit = {
@@ -83,6 +84,9 @@ trait GameElemClient {
     ctx.closePath()
     ctx.fill()
     ctx.stroke()
+    if (brick.isNormal % 2 == 0 && brick.isNormal < 10) {
+      ctx.drawImage(tool, brickPosition.x - 6, brickPosition.y - 8, Some(12, 16))
+    }
     ctx.restore()
 
   }

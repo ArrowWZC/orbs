@@ -25,7 +25,7 @@ case class Brick(
   }
 
   override protected val collisionOffset: Float = config.getBrickCW
-  override protected val width: Float = config.getBrickShape.x
+  override protected var width: Float = config.getBrickShape.x
   override protected val height: Float = config.getBrickShape.y
 
   def getBrickState: BrickState = {

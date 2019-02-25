@@ -90,13 +90,14 @@ case class OrbsSchemaServerImpl(
     var bricks = List[BrickState]()
     (1 to config.getBrickMax).foreach {
       index =>
+        val isNormal = new Random().nextInt(20).toByte
         val xIndex = if (index % config.getBrickXMax != 0) index % config.getBrickXMax else config.getBrickXMax
         val yIndex = if (index % config.getBrickYMax != 0) index / config.getBrickYMax else index / config.getBrickYMax - 1
         val brickPosition = genPosition(xIndex, yIndex)
         //        val random = new Random()
         //        val brickColor = (random.nextInt(5) + 1).toByte
         val brickColor = (yIndex + 1).toByte
-        val brickState = BrickState(byteId, brickIdGenerator.getAndIncrement(), 0, brickPosition, brickColor)
+        val brickState = BrickState(byteId, brickIdGenerator.getAndIncrement(), isNormal, brickPosition, brickColor)
         //        val brick = new Brick(config, brickState)
         //        brickMap.put(playerId, brick)
         //        quadTree.insert(brick)

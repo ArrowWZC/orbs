@@ -12,7 +12,7 @@ import org.seekloud.orbs.shared.ptcl.model.Point
   * 矩形游戏物体元素
   */
 trait RectangleObjectOfGame extends ObjectOfGame {
-  protected val width: Float
+  protected var width: Float
   protected val height: Float
   protected val collisionOffset: Float //？
 

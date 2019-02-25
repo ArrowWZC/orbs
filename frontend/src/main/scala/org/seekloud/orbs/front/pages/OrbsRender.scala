@@ -112,7 +112,9 @@ class OrbsRender(playerName: String, playerId: Option[String] = None) extends Pa
         键盘控制接球版移动；<br/>
         首先打完砖块者胜利；<br/>
         用光生命直接死亡；<br/>
-        砖块下落到地步直接死亡<br/>
+        砖块下落到底部直接死亡；<br/>
+        打到道具砖块会产生随机效果；<br/>
+        道具的随机效果好坏不定哦；<br/>
       </p>
     </div>
 

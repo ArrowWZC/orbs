@@ -32,8 +32,37 @@ case class Plank(
   }
 
   override protected val collisionOffset: Float = config.getPlankCW
-  override protected val width: Float = config.getPlankWidthByLevel(level)
+  override protected var width: Float = config.getPlankWidthByLevel(level)
   override protected val height: Float = config.getPlankHeight
+
+
+  //  def widthPlus(): Unit = {
+  //    width = (width + width * 0.5).toFloat
+  //    if (width >= config.getPlankWidthByLevel(level) * 4) {
+  //      width = config.getPlankWidthByLevel(level) * 4
+  //    }
+  //  }
+  //
+  //  def widthMinus(): Unit = {
+  //    width = (width - width * 0.1).toFloat
+  //    if (width <= config.getPlankWidthByLevel(level) * 0.5) {
+  //      width = config.getPlankWidthByLevel(level) * 0.5.toFloat
+  //    }
+  //  }
+  def levelUp(): Unit = {
+    if (level < 3) {
+      this.level = (this.level + 1).toByte
+      width = config.getPlankWidthByLevel(level)
+
+    }
+  }
+
+  def levelDown(): Unit = {
+    if (this.level > 1) {
+      this.level = (this.level - 1).toByte
+      width = config.getPlankWidthByLevel(level)
+    }
+  }
 
   def getPlankState: PlankState = {
     PlankState(pId, level, position, direction, isMove, ballAvailable)
@@ -72,7 +101,6 @@ case class Plank(
       }
     }
   }
-
 
 
 }
