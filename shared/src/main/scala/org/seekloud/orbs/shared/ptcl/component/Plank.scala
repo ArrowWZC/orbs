@@ -50,7 +50,7 @@ case class Plank(
   //    }
   //  }
   def levelUp(): Unit = {
-    if (level < 3) {
+    if (level < 5) {
       this.level = (this.level + 1).toByte
       width = config.getPlankWidthByLevel(level)
 

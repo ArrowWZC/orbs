@@ -38,7 +38,7 @@ case class Ball(
   override val radius: Float = config.getBallRadius
 
   def levelUp(): Unit = {
-    if (level < 3) {
+    if (level < 5) {
       this.level = (this.level + 1).toByte
     }
   }

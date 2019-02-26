@@ -111,14 +111,14 @@ case class OrbsSchemaServerImpl(
     //ball 的初始方向为[-pi, 0]之间的随机数，level默认为1
     val random = new Random()
     val plankPosition = Point((boundary.x / 2.0).toFloat, boundary.y - 50)
-    val plankState = PlankState(byteId, 2, plankPosition, 0, 0, Constants.life)
+    val plankState = PlankState(byteId, 3, plankPosition, 0, 0, Constants.life)
     val plank = new Plank(config, plankState)
     plankMap.put(playerId, plank)
     quadTree.insert(plank)
 
     val ballPosition = Point(plankPosition.x, plankPosition.y - config.getBallRadius - (config.getPlankHeight / 2.0).toFloat)
     val ballDirection = (random.nextFloat() * math.Pi * 0.5 - 3 / 4.0 * math.Pi).toFloat
-    val ballState = BallState(byteId, ballIdGenerator.getAndIncrement(), 2, ballPosition, ballDirection, 0, 0, 0)
+    val ballState = BallState(byteId, ballIdGenerator.getAndIncrement(), 3, ballPosition, ballDirection, 0, 0, 0)
     val ball = new Ball(config, ballState)
     ballMap.put(playerId + "&" + ballState.bId, ball)
     quadTree.insert(ball)
