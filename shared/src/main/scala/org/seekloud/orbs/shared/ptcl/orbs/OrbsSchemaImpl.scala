@@ -148,7 +148,7 @@ class OrbsSchemaImpl(
     }
     orbsSchemaState.brick.foreach { r =>
       if (playerIdMap.contains(r.pId)) {
-        val brick  = new Brick(config, r)
+        val brick = new Brick(config, r)
         quadTree.insert(brick)
         brickMap.put(playerIdMap(r.pId)._1 + "&" + r.rId, brick)
       } else {
@@ -158,11 +158,11 @@ class OrbsSchemaImpl(
     waitSyncData = false
   }
 
-//  def handleBrickDownEvent(e: BrickDown): Unit = {
-//    e.bricks.foreach { brick =>
-//      brickMap.find(r => r._2.pId == brick.pId && r._2.rId == brick.rId).foreach(_._2.setPosition(brick.position, quadTree))
-//    }
-//  }
+  def handleBrickDownEvent(e: BrickDown): Unit = {
+    e.bricks.foreach { brick =>
+      brickMap.find(r => r._2.pId == brick.pId && r._2.rId == brick.rId).foreach(_._2.setPosition(brick.position, quadTree))
+    }
+  }
 
   def receiveOrbsSchemaState(orbsSchemaState: OrbsSchemaState): Unit = {
     if (orbsSchemaState.f > systemFrame) {
@@ -197,7 +197,7 @@ class OrbsSchemaImpl(
       //      super.update()
       if (esRecoverSupport) {
         if (rollBackFrame.nonEmpty) {
-          rollBackFrame = rollBackFrame.distinct.filterNot(r => r < justSyncFrame || r >= systemFrame).sortWith(_< _)
+          rollBackFrame = rollBackFrame.distinct.filterNot(r => r < justSyncFrame || r >= systemFrame).sortWith(_ < _)
           rollBackFrame.headOption.foreach(rollback)
           super.update()
         } else {
@@ -224,7 +224,6 @@ class OrbsSchemaImpl(
     super.update()
     if (esRecoverSupport) addGameSnapshot(systemFrame, getOrbsSchemaState)
   }
-
 
 
 }

@@ -61,7 +61,7 @@ trait OrbsSchema {
 
   protected val quadTree: QuadTree = new QuadTree(Rectangle(Point(0, 0), boundary))
 
-  protected def byteId2PlayerId(byteId: Byte): Either[String, String] = {
+  def byteId2PlayerId(byteId: Byte): Either[String, String] = {
     if (playerIdMap.contains(byteId)) {
       Right(playerIdMap(byteId)._1)
     } else {
@@ -70,7 +70,7 @@ trait OrbsSchema {
     }
   }
 
-  protected def playerId2ByteId(playerId: String): Either[Byte, Byte] = {
+  def playerId2ByteId(playerId: String): Either[Byte, Byte] = {
     if (playerIdMap.exists(_._2._1 == playerId)) {
       Right(playerIdMap.filter(_._2._1 == playerId).keySet.head)
     } else {
@@ -123,13 +123,13 @@ trait OrbsSchema {
 
   protected final def handleUserLeftRoomEvent(e: UserLeftRoom): Unit = {
     playerIdMap.remove(e.byteId)
-//    val winner = plankMap.find(_._1 != e.playerId)
-//    episodeWinner = None
-    plankMap.filter(_._1 == e.playerId).foreach{ p =>
+    //    val winner = plankMap.find(_._1 != e.playerId)
+    //    episodeWinner = None
+    plankMap.filter(_._1 == e.playerId).foreach { p =>
       plankMap.remove(p._1)
       quadTree.remove(p._2)
     }
-    ballMap.filter(_._1.startsWith(e.playerId)).foreach{b =>
+    ballMap.filter(_._1.startsWith(e.playerId)).foreach { b =>
       ballMap.remove(b._1)
       quadTree.remove(b._2)
     }
@@ -153,7 +153,7 @@ trait OrbsSchema {
   }
 
   protected final def handleGenerateBrickEvent(e: GenerateBrick): Unit = {
-//    println(s"Generate bricks, frame: $systemFrame, brickSize: ${e.brick.size}, curBrickSize: ${brickMap.size}")
+    //    println(s"Generate bricks, frame: $systemFrame, brickSize: ${e.brick.size}, curBrickSize: ${brickMap.size}")
     if (e.isRestart.contains(1)) {
       brickMap.filter(_._2.pId == e.playerId).foreach { r =>
         brickMap.remove(r._1)
@@ -324,9 +324,9 @@ trait OrbsSchema {
 
   protected final def handlePlayerWinEvent(e: PlayerWin): Unit = {
     //除去玩家的所有砖块，保留板子和球
-//    println(s"handle ${e.playerId} win!!!")
+    //    println(s"handle ${e.playerId} win!!!")
     if (episodeWinner.isEmpty && playerIdMap.exists(_._1 == e.playerId)) {
-//      println(s"handlePlayerWinEvent")
+      //      println(s"handlePlayerWinEvent")
       episodeWinner = Some(e.playerId)
       episodeEndInit()
     }
@@ -447,6 +447,7 @@ trait OrbsSchema {
       actionEventMap.put(frame, actions.filterNot(t => t.playerId == playerId && t.serialNum == serialNum))
     }
   }
+
   def leftGame(playerId: String, name: String): Unit = {
     val byteId = playerId2ByteId(playerId)
     byteId match {

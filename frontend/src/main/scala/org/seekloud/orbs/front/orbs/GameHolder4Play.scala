@@ -133,8 +133,8 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
 
       //      case msg: PlankMissBall =>
 
-      //      case msg: BrickDown =>
-      //        orbsSchemaOpt.foreach(_.handleBrickDownEvent(msg))
+      case msg: BrickDown =>
+        orbsSchemaOpt.foreach(_.handleBrickDownEvent(msg))
 
 
       case msg: PingPackage =>
@@ -208,27 +208,30 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
             opByteId = None
 
           case e: BrickBeAttacked =>
-            orbsSchemaOpt.foreach { orbsSchema =>
-              orbsSchema.brickMap.filter(r => r._1 == myId && r._2.rId == e.rId).foreach {
-                brick =>
-                  brick._2.isNormal match {
-                    case 0 =>
-                      normalB = Some("板子开始变长")
-                      normalBT = 150
-                    case 2 =>
-                      normalB = Some("板子开始变短")
-                      normalBT = 150
-                    case 4 =>
-                      normalB = Some("球开始加速")
-                      normalBT = 150
-                    case 6 =>
-                      normalB = Some("球开始减速")
-                      normalBT = 150
-                  }
-              }
-            }
             Shortcut.playMusic("breakout")
 
+            if (e.playerId == myByteId) {
+              orbsSchemaOpt.foreach { orbsSchema =>
+                orbsSchema.brickMap.filter(r => r._2.pId == myByteId && r._2.rId == e.rId).foreach {
+                  brick =>
+                    brick._2.isNormal match {
+                      case 0 =>
+                        normalB = Some("板子开始变长")
+                        normalBT = 150
+                      case 2 =>
+                        normalB = Some("板子开始变短")
+                        normalBT = 150
+                      case 4 =>
+                        normalB = Some("球开始加速")
+                        normalBT = 150
+                      case 6 =>
+                        normalB = Some("球开始减速")
+                        normalBT = 150
+                      case _ =>
+                    }
+                }
+              }
+            }
           case _ =>
 
         }
