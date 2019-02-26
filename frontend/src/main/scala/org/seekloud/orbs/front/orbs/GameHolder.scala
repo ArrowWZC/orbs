@@ -60,7 +60,7 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
   protected var barrage: Option[(Byte, String)] = None //(sender, info)
   protected var barrageTime = 0
 
-  protected var normalB: Option[String] = None //(sender, info)
+  protected var normalB: Option[String] = None
   protected var normalBT = 0
 
   def gameRender(): Double => Unit = { d =>

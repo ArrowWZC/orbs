@@ -104,10 +104,12 @@ case class OrbsSchemaClientImpl(
   }
 
   def drawNormalBarrage(info: String): Unit = {
+    ctx.save()
     ctx.setFill("rgb(250, 250, 250)")
     ctx.setTextAlign("left")
     ctx.setFont("Helvetica", 20)
     ctx.fillText(info, 50, 65)
+    ctx.restore()
   }
 
   def drawGame(offSetTime: Long, canvasUnit: Float, canvasBounds: Point): Unit = {
