@@ -2,7 +2,7 @@ package org.seekloud.orbs.shared.ptcl.orbs
 
 import org.seekloud.orbs.shared.ptcl.component.{Ball, Brick, Plank}
 import org.seekloud.orbs.shared.ptcl.config.OrbsConfig
-import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol.{GameEvent, UserActionEvent}
+import org.seekloud.orbs.shared.ptcl.protocol.OrbsProtocol.{BrickDown, GameEvent, UserActionEvent}
 
 import scala.collection.mutable
 
@@ -122,7 +122,6 @@ class OrbsSchemaImpl(
     }
 
     systemFrame = orbsSchemaState.f
-
     quadTree.clear()
     plankMap.clear()
     ballMap.clear()
@@ -158,6 +157,12 @@ class OrbsSchemaImpl(
     }
     waitSyncData = false
   }
+
+//  def handleBrickDownEvent(e: BrickDown): Unit = {
+//    e.bricks.foreach { brick =>
+//      brickMap.find(r => r._2.pId == brick.pId && r._2.rId == brick.rId).foreach(_._2.setPosition(brick.position, quadTree))
+//    }
+//  }
 
   def receiveOrbsSchemaState(orbsSchemaState: OrbsSchemaState): Unit = {
     if (orbsSchemaState.f > systemFrame) {

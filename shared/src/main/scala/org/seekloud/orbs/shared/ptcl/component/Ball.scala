@@ -54,12 +54,11 @@ case class Ball(
   }
 
   def startAttack(d: Float): Unit = {
-    val random = new Random()
-    this.isMove = 1
-    this.isAttack = 1
-    //    this.direction = (random.nextFloat() * math.Pi * 0.5 - 3 / 4.0 * math.Pi).toFloat
-//    this.direction = (-7 / 20.0 * math.Pi).toFloat
-    this.direction = d
+    if (isAttack == 0) {
+      this.isMove = 1
+      this.isAttack = 1
+      this.direction = d
+    }
   }
 
   //0: left，1：right

@@ -89,17 +89,13 @@ class OrbsRender(playerName: String, playerId: Option[String] = None) extends Pa
   }
 
 
-  private val topArea = playerId match {
-    case Some(_) =>
-      <div class="container topArea">
-        <div class="row">
-          {interactArea}
-          {emojiArea}
-        </div>
+  private val topArea =
+    <div class="container topArea">
+      <div class="row">
+        {interactArea}
+        {emojiArea}
       </div>
-    case None => emptyHTML
-
-  }
+    </div>
 
   private val gameInstrument =
     <div class="gameInstrument" style={s"background:url(${Routes.imgPath("gi.png")});" +

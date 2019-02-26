@@ -16,7 +16,19 @@ import scala.util.Random
 trait GameElemClient {
   this: OrbsSchemaClientImpl =>
   val ballImg = drawFrame.createImage(Routes.imgPath("ball.png"))
+  val plankImg = drawFrame.createImage(Routes.imgPath("paddleBlu.png"))
   val tool = drawFrame.createImage(Routes.imgPath("tool.png"))
+  val brRed = drawFrame.createImage(Routes.imgPath("brRed.png"))
+  val brYellow = drawFrame.createImage(Routes.imgPath("brYellow.png"))
+  val brGreen = drawFrame.createImage(Routes.imgPath("brGreen.png"))
+  val brBlue = drawFrame.createImage(Routes.imgPath("brBlue.png"))
+  val brPurple = drawFrame.createImage(Routes.imgPath("brPurple.png"))
+  val brGray = drawFrame.createImage(Routes.imgPath("brGray.png"))
+  //  def brickImg(color: String) = drawFrame.createImage(Routes.imgPath(s"$color.png"))
+  val plus = drawFrame.createImage(Routes.imgPath("plus.png"))
+  val minus = drawFrame.createImage(Routes.imgPath("minus.png"))
+  val speed = drawFrame.createImage(Routes.imgPath("speed.png"))
+  val slow = drawFrame.createImage(Routes.imgPath("slow.png"))
 
 
   def drawArcRect(ctx: MiddleContext, r: Double, width: Double, height: Double, left: Double, top: Double): Unit = {
@@ -34,13 +46,14 @@ trait GameElemClient {
   }
 
   def drawAPlank(plank: Plank, ctx: MiddleContext, canvasUnit: Float, canvasBounds: Point): Unit = {
-    val r = plank.getHeight / 2
+    //    val r = plank.getHeight / 2
     val barLeft = plank.getPlankState.position.x - plank.getWidth / 2
     val barTop = plank.getPlankState.position.y - plank.getHeight / 2
-    ctx.setFill("#616161")
-    drawArcRect(ctx, r, plank.getWidth, plank.getHeight, barLeft, barTop)
-    ctx.setFill("#c7c7c7")
-    drawArcRect(ctx, r - 1, plank.getWidth - 2, plank.getHeight - 2, barLeft + 1, barTop + 1)
+    //    ctx.setFill("#616161")
+    //    drawArcRect(ctx, r, plank.getWidth, plank.getHeight, barLeft, barTop)
+    //    ctx.setFill("#c7c7c7")
+    //    drawArcRect(ctx, r - 1, plank.getWidth - 2, plank.getHeight - 2, barLeft + 1, barTop + 1)
+    ctx.drawImage(plankImg, barLeft, barTop, Some(plank.getWidth, plank.getHeight))
 
   }
 
@@ -74,18 +87,35 @@ trait GameElemClient {
     val brickPosition = brick.getBrickState.position
     val brickShape = Point(brick.getWidth, brick.getHeight)
     ctx.save()
-//    ctx.setShadowColor("rgba(0,0,0,0.5")
-//    ctx.setShadowBlur(1)
-    ctx.lineWidth(2.5)
-    ctx.setFill(config.getBrickColor(brick.color))
-    ctx.setStrokeStyle("rgba(0,0,0,0.5")
-    ctx.beginPath()
-    ctx.rect(brickPosition.x - brickShape.x / 2, brickPosition.y - brickShape.y / 2, brickShape.x, brickShape.y)
-    ctx.closePath()
-    ctx.fill()
-    ctx.stroke()
-    if (brick.isNormal % 2 == 0 && brick.isNormal < 10) {
-      ctx.drawImage(tool, brickPosition.x - 6, brickPosition.y - 8, Some(12, 16))
+    //    ctx.lineWidth(2.5)
+    //    ctx.setFill(config.getBrickColor(brick.color))
+    //    ctx.setStrokeStyle("rgba(0,0,0,0.5")
+    //    ctx.beginPath()
+    //    ctx.rect(brickPosition.x - brickShape.x / 2, brickPosition.y - brickShape.y / 2, brickShape.x, brickShape.y)
+    //    ctx.closePath()
+    //    ctx.fill()
+    //    ctx.stroke()
+    val brickImg = config.getBrickColor(brick.color) match {
+      case "brRed" => brRed
+      case "brYellow" => brYellow
+      case "brGreen" => brGreen
+      case "brBlue" => brBlue
+      case "brPurple" => brPurple
+      case "brGray" => brGray
+    }
+    ctx.drawImage(brickImg, brickPosition.x - brickShape.x / 2, brickPosition.y - brickShape.y / 2, Some(brickShape.x, brickShape.y))
+    if (brick.isNormal % 2 == 0 && brick.isNormal < 8) {
+      val tool = brick.isNormal match {
+        case 0 =>
+          ctx.drawImage(plus, brickPosition.x - 6, brickPosition.y - 8, Some(20, 20))
+        case 2 =>
+          ctx.drawImage(minus, brickPosition.x - 6, brickPosition.y - 8, Some(20, 20))
+        case 4 =>
+          ctx.drawImage(speed, brickPosition.x - 6, brickPosition.y - 8, Some(20, 20))
+        case 6 =>
+          ctx.drawImage(slow, brickPosition.x - 6, brickPosition.y - 8, Some(20, 20))
+
+      }
     }
     ctx.restore()
 

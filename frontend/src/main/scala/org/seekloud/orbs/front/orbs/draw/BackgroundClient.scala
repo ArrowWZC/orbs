@@ -14,7 +14,7 @@ import org.seekloud.orbs.shared.ptcl.util.middleware.MiddleContext
 trait BackgroundClient {
   this: OrbsSchemaClientImpl =>
 
-  val backgroundImg = drawFrame.createImage(Routes.imgPath("test.jpg"))
+  val backgroundImg = drawFrame.createImage(Routes.imgPath("picBack.jpg"))
   val lifeImg = drawFrame.createImage(Routes.imgPath("life.png"))
   val brickImg = drawFrame.createImage(Routes.imgPath("brick.png"))
 

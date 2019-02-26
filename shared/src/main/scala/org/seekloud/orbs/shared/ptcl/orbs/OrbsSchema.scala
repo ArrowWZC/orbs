@@ -44,7 +44,7 @@ trait OrbsSchema {
 
   var latestBricksDownFrame: Int = 0
 
-  protected val brickDownInterval: Int = 200
+  protected val brickDownInterval: Int = 250
 
   /*元素*/
   val ballMap = mutable.HashMap[String, Ball]() //playerId & bId -> Ball
@@ -193,20 +193,20 @@ trait OrbsSchema {
         brickMap.remove(pId + "&" + e.rId)
         brick.foreach { b =>
           quadTree.remove(b)
-          if (b.isNormal % 2 == 0 && b.isNormal < 10) {
+          if (b.isNormal % 2 == 0 && b.isNormal < 8) {
             println(s"$pId 使用道具 ${b.isNormal}, time: ${System.currentTimeMillis()}")
             b.isNormal match {
-              case 2 => //板子变长
+              case 0 => //板子变长
                 plankMap.get(pId).foreach(_.levelUp())
               //              case 1 => //对手变短
               //                plankMap.filterNot(_._1 == pId).foreach(_._2.levelDown())
-              case 4 => //自己变短
-                plankMap.get(pId).foreach(_.levelUp())
+              case 2 => //自己变短
+                plankMap.get(pId).foreach(_.levelDown())
               //              case 3 => //对手变长
               //                plankMap.filterNot(_._1 == pId).foreach(_._2.levelDown())
-              case 6 => //球加速
+              case 4 => //球加速
                 ballMap.filter(_._1.startsWith(pId)).foreach(_._2.levelUp())
-              case 8 => //球减速
+              case 6 => //球减速
                 ballMap.filter(_._1.startsWith(pId)).foreach(_._2.levelDown())
               case _ => // do nothing
             }
@@ -265,6 +265,7 @@ trait OrbsSchema {
   protected def plankMissBallCallBack(ball: Ball)(plank: Plank): Unit = {}
 
 
+  /*后台重写*/
   protected def attackPlankCallBack(ball: Ball)(plank: Plank): Unit = {
     if (systemFrame - ball.lastCatchFrame > catchBallBuffer) {
       ball.reflect(reflector.horizontal)

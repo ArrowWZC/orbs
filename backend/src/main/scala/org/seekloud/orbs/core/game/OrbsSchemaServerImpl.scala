@@ -154,6 +154,11 @@ case class OrbsSchemaServerImpl(
     dispatch(event)
   }
 
+  override protected def attackPlankCallBack(ball: Ball)(plank: Plank): Unit = {
+    super.attackPlankCallBack(ball)(plank)
+    dispatch(ReachPlank)
+  }
+
   override protected def plankMissBallCallBack(ball: Ball)(plank: Plank): Unit = {
     super.plankMissBallCallBack(ball)(plank)
     val random = new Random()
@@ -176,7 +181,7 @@ case class OrbsSchemaServerImpl(
     if (systemFrame - latestBricksDownFrame > brickDownInterval) {
       if (plankMap.size == AppSettings.personLimit) {
         brickMap.values.foreach { brick =>
-          brick.brickDown()
+          brick.brickDown(quadTree)
 //          println(s"player ${brick.pId} brick down")
           val data = getOrbsSchemaState
           dispatch(SchemaSyncState(data))

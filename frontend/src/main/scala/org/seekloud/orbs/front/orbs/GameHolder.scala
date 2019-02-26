@@ -60,6 +60,9 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
   protected var barrage: Option[(Byte, String)] = None //(sender, info)
   protected var barrageTime = 0
 
+  protected var normalB: Option[String] = None //(sender, info)
+  protected var normalBT = 0
+
   def gameRender(): Double => Unit = { d =>
     val curTime = System.currentTimeMillis()
     val offsetTime = curTime - logicFrameTime
@@ -169,6 +172,10 @@ abstract class GameHolder(canvasName: String, opCanvasName: String) extends Netw
           if (barrage.nonEmpty && barrageTime > 0) {
             orbsSchema.drawBarrage(barrage.get._1, barrage.get._2)
             barrageTime -= 1
+          }
+          if (normalB.nonEmpty && normalBT > 0) {
+            orbsSchema.drawNormalBarrage(normalB.get)
+            normalBT -= 1
           }
         }
       } else {

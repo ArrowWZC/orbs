@@ -2,6 +2,7 @@ package org.seekloud.orbs.shared.ptcl.component
 
 import org.seekloud.orbs.shared.ptcl.config.OrbsConfig
 import org.seekloud.orbs.shared.ptcl.model.Point
+import org.seekloud.orbs.shared.ptcl.util.QuadTree
 
 /**
   * User: TangYaruo
@@ -32,8 +33,14 @@ case class Brick(
     BrickState(pId, rId, isNormal, position, color)
   }
 
-  def brickDown(): Unit = {
+  def brickDown(quadTree: QuadTree): Unit = {
     this.position = Point(this.position.x, this.position.y + height)
+    quadTree.updateObject(this)
+  }
+
+  def setPosition(newPosition: Point, quadTree: QuadTree): Unit = {
+    this.position = Point(newPosition.x, newPosition.y)
+    quadTree.updateObject(this)
   }
 
 }

@@ -1,6 +1,7 @@
 package org.seekloud.orbs.front.utils
 
 import org.scalajs.dom
+import org.scalajs.dom.raw.HTMLAudioElement
 
 import scala.scalajs.js.Date
 
@@ -83,8 +84,28 @@ object Shortcut {
     dom.window.setInterval(() => f(), delayMillisecond)
   }
 
-  def cancelSchedule(h:Int): Unit = {
+  def cancelSchedule(h: Int): Unit = {
     dom.window.clearInterval(h)
+  }
+
+  def playMusic(id: String) = {
+    val audio = dom.document.getElementById(id).asInstanceOf[HTMLAudioElement]
+    audio.play()
+  }
+
+  def pauseMusic(id: String) = {
+    val audio = dom.document.getElementById(id).asInstanceOf[HTMLAudioElement]
+    audio.pause()
+  }
+
+  def refreshMusic(id: String) = {
+    val audio = dom.document.getElementById(id).asInstanceOf[HTMLAudioElement]
+    audio.currentTime = 0
+  }
+
+  def isPaused(id: String): Boolean = {
+    val audio = dom.document.getElementById(id).asInstanceOf[HTMLAudioElement]
+    audio.paused
   }
 
 

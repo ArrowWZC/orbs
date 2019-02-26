@@ -35,8 +35,8 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
       gameLoop()
     }
     else if (webSocketClient.getWsState) {
-//      println("restart...")
-//      reStart()
+      //      println("restart...")
+      //      reStart()
     } else {
       JsFunc.alert("网络连接失败，请重新刷新")
     }
@@ -47,9 +47,9 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
     webSocketClient.sendMsg(event)
   }
 
-//  def reStart(): Unit = {
-//    webSocketClient.sendMsg(RestartGame())
-//  }
+  //  def reStart(): Unit = {
+  //    webSocketClient.sendMsg(RestartGame())
+  //  }
 
   def getActionSerialNum: Byte = (actionSerialNumGenerator.getAndIncrement() % 127).toByte
 
@@ -104,7 +104,7 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
           }
         }
         if (opId.isEmpty) gameState = GameState.wait4Opponent else gameState = GameState.play
-//        gameState = GameState.play
+        //        gameState = GameState.play
         if (nextFrame == 0) nextFrame = dom.window.requestAnimationFrame(gameRender())
         firstCome = false
 
@@ -133,21 +133,27 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
 
       //      case msg: PlankMissBall =>
 
+      //      case msg: BrickDown =>
+      //        orbsSchemaOpt.foreach(_.handleBrickDownEvent(msg))
+
 
       case msg: PingPackage =>
         receivePingPackage(msg)
+
+      case ReachPlank =>
+        Shortcut.playMusic("bump")
 
       case msg: UserActionEvent =>
         msg match {
           case e: RestartGame =>
             if (e.playerId == myByteId) {
-//              println(s"收到自己的重启消息！")
+              //              println(s"收到自己的重启消息！")
               opByteId match {
                 case Some(_) => gameState = GameState.play
                 case None => gameState = GameState.wait4Opponent
               }
             } else { //收到对手RestartGame消息
-//              println(s"收到对手的重启消息")
+              //              println(s"收到对手的重启消息")
               opByteId = Some(e.playerId)
               if (gameState == GameState.wait4Opponent) {
                 gameState = GameState.play
@@ -173,7 +179,7 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
 
             }
           case e: UserLeftRoom =>
-            orbsSchemaOpt.foreach{
+            orbsSchemaOpt.foreach {
               orbsSchema =>
                 orbsSchema.playerIdMap.remove(e.byteId)
                 if (e.playerId != myId) {
@@ -186,15 +192,42 @@ class GameHolder4Play(name: String, oName: String) extends GameHolder(name, oNam
             }
 
           case e: PlayerWin =>
-//            println(s"player-${e.playerId} win...")
-//            dom.window.setTimeout(() =>
-//              {
-//                gameState = GameState.stop
-//                opByteId = None
-//              }, 500)
+            //            println(s"player-${e.playerId} win...")
+            //            dom.window.setTimeout(() =>
+            //              {
+            //                gameState = GameState.stop
+            //                opByteId = None
+            //              }, 500)
+            if (e.playerId == myByteId) {
+              Shortcut.playMusic("success")
+            } else {
+              Shortcut.playMusic("lose")
+            }
             gameState = GameState.stop
-//            println(s"win后gameState: $gameState")
+            //            println(s"win后gameState: $gameState")
             opByteId = None
+
+          case e: BrickBeAttacked =>
+            orbsSchemaOpt.foreach { orbsSchema =>
+              orbsSchema.brickMap.filter(r => r._1 == myId && r._2.rId == e.rId).foreach {
+                brick =>
+                  brick._2.isNormal match {
+                    case 0 =>
+                      normalB = Some("板子开始变长")
+                      normalBT = 150
+                    case 2 =>
+                      normalB = Some("板子开始变短")
+                      normalBT = 150
+                    case 4 =>
+                      normalB = Some("球开始加速")
+                      normalBT = 150
+                    case 6 =>
+                      normalB = Some("球开始减速")
+                      normalBT = 150
+                  }
+              }
+            }
+            Shortcut.playMusic("breakout")
 
           case _ =>
 

@@ -81,6 +81,8 @@ object OrbsProtocol {
 
   final case class SchemaSyncState(s: OrbsSchemaState) extends WsMsgServer
 
+  final case class BrickDown(bricks: List[BrickState]) extends WsMsgServer
+
 
 
 
@@ -92,6 +94,8 @@ object OrbsProtocol {
   final case class BrickBeAttacked(playerId: Byte, rId: Int, override val frame: Int = 0) extends UserEvent with WsMsgServer
 
   final case class PlankMissBall(playerId: Byte, bId: Int, newBall: BallState, override val frame: Int = 0) extends UserEvent with WsMsgServer
+
+  final case object ReachPlank extends WsMsgServer
 
   final case class PlayerWin(playerId: Byte, override val frame: Int) extends UserEvent with WsMsgServer
 
